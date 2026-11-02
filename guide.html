@@ -170,6 +170,12 @@
   .mailbox { background:#F4F7FB; border:1px solid #D5DFEC; border-radius:12px; padding:14px 16px; line-height:1.9; margin-bottom:12px; word-break:break-all; }
   .mailbox .addr { font-size:19px; font-weight:800; color:#B42318; }
   .mailbox .addr.set { color:#0b1043; user-select:all; }
+  .copyrow { display:flex; align-items:center; flex-wrap:wrap; gap:10px; margin:2px 0 6px; }
+  button.form-download { border:0; cursor:pointer; font-family:inherit; }
+  button.form-download:disabled { opacity:.55; cursor:not-allowed; }
+  .copyok { font-size:13.5px; color:#1E7B4A; }
+  .phase { margin:22px 2px 10px; padding:10px 14px; border-radius:10px; background:#FFF4EC; border:1px solid #F7C4A5; color:#7C2D12; font-weight:700; font-size:15px; line-height:1.6; }
+  .phase small { display:block; font-weight:400; font-size:13.5px; }
 </style>
 <script src="busy-indicator.js" defer></script>
 <script src="highlight-box.js?v=1" defer></script>
@@ -186,7 +192,7 @@
   </header>
 
   <div class="card">
-    <div class="card-title">1. 외래강사 등록</div>
+    <div class="card-title">1. 외래강사 등록 <span style="font-weight:400;font-size:13.5px;color:#52606D;">(처음 한 번)</span></div>
     <ol class="steps">
       <li>아래 양식을 내려받아 작성합니다.
         <div class="dl"><a class="form-download" href="forms/instructor-card.hwpx" download="강사관리카드_양식.hwpx">↓ 강사관리카드 양식</a>
@@ -195,9 +201,11 @@
       <li>증명사진은 강사관리카드의 <b>사진 칸에 붙여 넣고</b>, 두 서류를 <b>PDF로 변환(저장)</b>합니다.</li>
       <li>두 PDF 파일을 <b>메일 한 통</b>에 첨부해 아래 주소로 보냅니다(사진을 따로 보내셔도 됩니다).</li>
     </ol>
-    <div class="mailbox"><div>받는 주소</div><div class="addr js-mail">(담당자에게 문의)</div><div>메일 제목: <b>[강사등록] 성명</b></div></div>
+    <div class="mailbox"><div>받는 주소</div><div class="addr js-mail">(담당자에게 문의)</div><div class="copyrow"><button type="button" class="form-download js-copy" disabled>받는 주소 복사</button><span class="copyok js-copyok" role="status" aria-live="polite"></span></div><div>메일 제목: <b>[강사등록] 성명</b></div></div>
     <div class="hint">등록되면 담당자가 메일로 알려 드립니다. 서류에 적으신 개인정보는 공직자 메일과 학교 업무용 컴퓨터에서만 다루며, 민간 클라우드(구글 등)에는 저장하지 않습니다. 이용 목적·보유기간 등은 동의서에 적힌 대로입니다.</div>
   </div>
+
+  <div class="phase">강의 배정 안내를 받으신 뒤에 하실 일입니다.<small>등록이 끝나고 강의가 배정되면, 담당자가 문자·메일로 안내드립니다. 아래 2·3번은 그 안내를 받은 뒤에 진행해 주세요.</small></div>
 
   <div class="card">
     <div class="card-title">2. 강의계획서 제출</div>
@@ -210,9 +218,9 @@
   </div>
 
   <div class="card">
-    <div class="card-title">3. 학교 둘러보기 · 숙소 신청</div>
-    <p style="margin:0 0 10px;">오시는 길과 시설 안내, 강사 임시숙소 신청은 학교 소개 페이지에서 할 수 있습니다. 숙소 신청은 성명·과정명·사용일만 입력하면 <b>공직자 메일로 보낼 제목이 만들어지며</b>, 메일은 직접 보내 주세요(제목 형식: <b>[숙소신청] 성명 / 과정명 / 사용일</b>).</p>
-    <a class="form-download" href="school.html">학교 둘러보기·숙소 신청 →</a>
+    <div class="card-title">3. 임시숙소 신청 <span style="font-weight:400;font-size:13.5px;color:#52606D;">(필요하신 분)</span></div>
+    <p style="margin:0 0 10px;">강의 배정 안내에서 <b>과정명과 강의 일자</b>를 확인한 뒤 신청해 주세요. 학교 소개 페이지의 숙소 신청 창에 성명·과정명·사용일만 입력하면 <b>공직자 메일로 보낼 제목이 만들어지며</b>, 메일은 직접 보내 주셔야 합니다(제목 형식: <b>[숙소신청] 성명 / 과정명 / 사용일</b>).</p>
+    <a class="form-download" href="school.html">학교 소개에서 숙소 신청하기 →</a>
   </div>
 
   <footer class="contact">문의사항이 있으시면<br><b class="js-name">교육운영팀</b> <b class="js-phone">061-860-4735</b>로 연락 주시기 바랍니다.</footer>
@@ -222,6 +230,17 @@
     var cfg = window.RELAY_CONFIG || {};
     var m = document.querySelector('.js-mail'); if (cfg.officialMail) { m.textContent = cfg.officialMail; m.classList.add('set'); }
     if (cfg.contactPhone) document.querySelector('.js-phone').textContent = cfg.contactPhone;
+    var cb = document.querySelector('.js-copy'), ok = document.querySelector('.js-copyok');
+    if (cfg.officialMail) cb.disabled = false;
+    else { cb.textContent = '주소 준비 중'; }
+    cb.addEventListener('click', function () {
+      var t = cfg.officialMail || '';
+      if (!t) return;
+      function done() { ok.textContent = '복사했습니다. 메일 받는 사람 칸에 붙여 넣으세요.'; setTimeout(function () { ok.textContent = ''; }, 4000); }
+      function fail() { ok.textContent = '복사하지 못했습니다. 주소를 직접 선택해 복사해 주세요.'; }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, fail);
+      else { var a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select(); try { document.execCommand('copy'); done(); } catch (e) { fail(); } a.remove(); }
+    });
   })();
 </script>
 <div id="verStamp" style="text-align:center;font-size:11px;color:#9AA3AF;padding:14px 0 18px;font-family:'Pretendard',sans-serif;">화면 버전 2026-11-02 노트북판 안내 2 외래강사 안내</div>
