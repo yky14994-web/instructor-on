@@ -1,0 +1,6 @@
+웹 작성 화면(write.html)이 쓰는 공개 라이브러리·글꼴
+
+- pdf-lib 1.17.1 (MIT License) https://github.com/Hopding/pdf-lib
+- @pdf-lib/fontkit 1.1.1 (MIT License) https://github.com/Hopding/fontkit
+- fonts/ion-Regular.woff, fonts/ion-Bold.woff: Pretendard 1.3.9 일부 글자만 담은 사본 (SIL Open Font License 1.1) https://github.com/orioncactus/pretendard
+- fonts/ion-hanja.woff: Noto Sans CJK KR의 KS X 1001 한자만 담은 사본 (SIL Open Font License 1.1) https://github.com/notofonts/noto-cjk

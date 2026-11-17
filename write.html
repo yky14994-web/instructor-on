@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>외래강사 등록 서류 웹 작성 · 전남소방학교</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+  :root { --navy:#1B3A5F; --navy-d:#142a45; --main:#3A6EA5; --text:#1a1a1a; --sub:#4A4946; --muted:#6B7480; --line:#E1E5EA; --input:#C9D1DA; --bg:#F0F2F5; --bad:#C2410C; --ok:#1E7B4A; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:'Pretendard',-apple-system,'Malgun Gothic',sans-serif; background:var(--bg); color:var(--text); font-size:15px; }
+  .wrap { max-width:760px; margin:0 auto; padding:24px 18px 120px; }
+  .sysbrand { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:10px 14px; background:#10263F; color:#fff; border-radius:10px; margin-bottom:18px; }
+  .sysbrand b { font-size:15px; } .sysbrand em { font-style:normal; color:#FFB38A; } .sysbrand small { font-size:12px; opacity:.85; }
+  h1 { font-size:24px; margin:4px 0 8px; letter-spacing:-.4px; }
+  .lead { color:var(--sub); line-height:1.65; margin:0 0 14px; word-break:keep-all; }
+  .safe { display:flex; gap:10px; align-items:flex-start; background:#EEF4FB; border:1px solid #CFDCEC; border-radius:10px; padding:12px 14px; font-size:14px; line-height:1.6; color:#203A57; margin-bottom:16px; word-break:keep-all; }
+  .safe svg { flex:none; margin-top:2px; }
+  /* 단계 표시 */
+  .stepnav { position:sticky; top:0; z-index:5; display:grid; grid-template-columns:repeat(4,1fr); gap:6px; padding:10px 0; background:var(--bg); }
+  .stepnav a { display:flex; flex-direction:column; align-items:center; gap:4px; padding:8px 4px; border-radius:10px; background:#fff; border:1px solid var(--line); text-decoration:none; color:var(--sub); font-size:13px; font-weight:600; text-align:center; word-break:keep-all; }
+  .stepnav a i { font-style:normal; width:24px; height:24px; border-radius:50%; background:#DCE3EB; color:#3B4754; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; }
+  .stepnav a.on { border-color:var(--navy); color:var(--navy); } .stepnav a.on i { background:var(--navy); color:#fff; }
+  .stepnav a.done i { background:var(--ok); color:#fff; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:14px; padding:22px 22px 8px; margin-bottom:16px; scroll-margin-top:84px; }
+  .card h2 { margin:0 0 4px; font-size:18px; color:var(--navy); display:flex; align-items:center; gap:8px; }
+  .card h2 i { font-style:normal; width:26px; height:26px; border-radius:50%; background:var(--navy); color:#fff; display:inline-flex; align-items:center; justify-content:center; font-size:14px; }
+  .card .desc { margin:0 0 16px; color:var(--muted); font-size:13.5px; line-height:1.6; word-break:keep-all; }
+  .sub { margin:18px 0 10px; padding-top:14px; border-top:1px solid var(--line); font-weight:800; font-size:15px; color:#24323F; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:0 16px; }
+  .f { margin-bottom:16px; }
+  label, .lbl { display:block; font-size:14px; font-weight:700; margin-bottom:6px; }
+  .req::after { content:' *'; color:var(--bad); }
+  .opt { font-weight:400; color:var(--muted); font-size:13px; }
+  input[type=text], input[type=tel], input[type=email], select, textarea { width:100%; height:46px; border:1px solid var(--input); border-radius:8px; padding:0 14px; font-size:15px; font-family:inherit; background:#fff; color:var(--text); }
+  textarea { height:auto; min-height:88px; padding:12px 14px; line-height:1.55; resize:vertical; }
+  input:focus, select:focus, textarea:focus { outline:none; border-color:var(--navy); box-shadow:0 0 0 3px rgba(27,58,95,.12); }
+  input::placeholder, textarea::placeholder { color:#A3ACB6; }
+  .ex { margin-top:6px; font-size:13px; color:var(--muted); line-height:1.5; }
+  .row-rrn { display:grid; grid-template-columns:1fr 18px 1fr; align-items:center; gap:6px; }
+  .row-rrn span { text-align:center; color:var(--muted); }
+  .sens { margin-top:6px; font-size:12.5px; color:#7A4A00; background:#FFF6E5; border-radius:6px; padding:6px 10px; line-height:1.5; }
+  /* 사진 */
+  .photo { display:flex; gap:14px; align-items:center; margin-bottom:16px; }
+  .photo .box { width:84px; height:108px; border:1px dashed var(--input); border-radius:8px; background:#F7F9FB; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:12px; overflow:hidden; }
+  .photo .box img { width:100%; height:100%; object-fit:cover; }
+  .btn { display:inline-flex; align-items:center; justify-content:center; gap:6px; height:42px; padding:0 16px; border-radius:8px; border:1px solid var(--input); background:#fff; color:var(--navy); font-weight:700; font-size:14px; font-family:inherit; cursor:pointer; }
+  .btn:hover { background:#F1F5FA; }
+  .btn.main { background:var(--navy); border-color:var(--navy); color:#fff; } .btn.main:hover { background:var(--navy-d); }
+  .btn.big { height:54px; font-size:16px; width:100%; border-radius:10px; }
+  .btn:disabled { opacity:.5; cursor:not-allowed; }
+  /* 선택 칩 */
+  .chips { display:flex; flex-wrap:wrap; gap:8px; }
+  .chips input { position:absolute; opacity:0; pointer-events:none; }
+  .chips label { margin:0; display:inline-flex; align-items:center; gap:6px; min-height:40px; padding:6px 12px; border:1px solid var(--input); border-radius:8px; font-weight:600; font-size:14px; color:var(--sub); cursor:pointer; background:#fff; }
+  .chips label::before { content:''; width:14px; height:14px; border:1.5px solid #8C97A3; border-radius:3px; flex:none; }
+  .chips.one label::before { border-radius:50%; }
+  .chips input:checked + label { border-color:var(--navy); color:var(--navy); background:#EEF3F9; }
+  .chips input:checked + label::before { background:var(--navy); border-color:var(--navy); box-shadow:inset 0 0 0 2px #fff; }
+  .chips input:focus-visible + label { outline:2px solid var(--main); outline-offset:2px; }
+  .chips.col { flex-direction:column; align-items:stretch; } .chips.col label { justify-content:flex-start; }
+  .chips small { font-weight:400; color:var(--muted); }
+  .chips.col label span { word-break:keep-all; line-height:1.45; } .chips.col label b { white-space:nowrap; }
+  /* 동의 */
+  .cons { border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin-bottom:12px; background:#FAFBFC; }
+  .cons h3 { margin:0 0 6px; font-size:15px; }
+  .cons dl { margin:0 0 10px; font-size:13.5px; color:var(--sub); line-height:1.6; }
+  .cons dt { font-weight:700; color:#33404C; margin-top:6px; } .cons dd { margin:0; }
+  .yn { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .yn input { position:absolute; opacity:0; } .yn label { margin:0; height:44px; display:flex; align-items:center; justify-content:center; border:1px solid var(--input); border-radius:8px; background:#fff; font-size:14px; cursor:pointer; }
+  .yn input:checked + label { border-color:var(--navy); background:#EEF3F9; color:var(--navy); box-shadow:inset 0 0 0 1px var(--navy); }
+  .yn input.no:checked + label { border-color:var(--bad); color:var(--bad); background:#FFF5F0; box-shadow:inset 0 0 0 1px var(--bad); }
+  details.full { margin:4px 0 10px; font-size:13px; color:var(--sub); } details.full summary { cursor:pointer; font-weight:700; color:var(--main); }
+  /* 서명 */
+  .sign { border:1px solid var(--input); border-radius:10px; background:#fff; position:relative; height:170px; touch-action:none; }
+  .sign canvas { width:100%; height:100%; display:block; border-radius:10px; }
+  .sign .ph { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#A3ACB6; font-size:15px; pointer-events:none; }
+  .sign .base { position:absolute; left:16px; right:16px; bottom:34px; border-bottom:1px dashed #C9D1DA; pointer-events:none; }
+  .signbar { display:flex; justify-content:space-between; align-items:center; margin-top:8px; font-size:13px; color:var(--muted); }
+  /* 보내기 */
+  .check { list-style:none; margin:0 0 14px; padding:0; }
+  .check li { display:flex; justify-content:space-between; gap:10px; padding:9px 0; border-bottom:1px solid var(--line); font-size:14px; }
+  .check li b.okk { color:var(--ok); } .check li b.no { color:var(--bad); }
+  .send { display:grid; gap:10px; margin-bottom:16px; }
+  .mailbox { background:#F4F7FB; border:1px solid #D5DFEC; border-radius:10px; padding:12px 14px; font-size:14px; line-height:1.9; margin-bottom:12px; }
+  .mailbox .k { color:var(--muted); display:inline-block; min-width:62px; }
+  .mailbox .lnk { border:0; background:none; color:var(--main); font-weight:700; font-family:inherit; font-size:13px; text-decoration:underline; cursor:pointer; }
+  .hide { display:none !important; }
+  .made { padding:12px 14px; border-radius:10px; background:#E9F6EE; border:1px solid #B7DEC5; color:#14532D; font-size:14px; line-height:1.6; }
+  .made.old { background:#FFF4E5; border-color:#F5C98A; color:#7A4A00; }
+  .msg { font-size:14px; margin:-6px 0 12px; min-height:1px; } .msg.bad { color:var(--bad); font-weight:600; } .msg.ok { color:var(--ok); font-weight:600; }
+  .draft { margin:0 0 14px; padding:10px 14px; border-radius:10px; background:#FFF4E5; border:1px solid #F5C98A; color:#7A4A00; font-size:13.5px; font-weight:600; }
+  .note { font-size:13px; color:var(--muted); line-height:1.6; margin:0 0 16px; word-break:keep-all; }
+  footer { text-align:center; color:var(--muted); font-size:13px; margin-top:24px; }
+  @media (max-width:600px) {
+    .wrap { padding:16px 12px 120px; } .card { padding:18px 16px 4px; }
+    .grid2 { grid-template-columns:1fr; } h1 { font-size:21px; }
+    .stepnav a { font-size:12px; padding:7px 2px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="sysbrand"><div><b>소방교육 외래강사 <em>ON</em></b></div><small>전남소방학교</small></div>
+
+  <h1>외래강사 등록 서류 웹 작성</h1>
+  <p class="lead">강사관리카드와 개인정보 수집·활용 동의서를 이 화면에서 작성하면 PDF 2개가 만들어집니다. 만든 PDF를 <b>본인 메일</b>로 담당자 공직자 메일에 보내 주세요.</p>
+  <div class="safe"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B3A5F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+    <div>입력한 내용은 <b>이 기기의 브라우저 안에서만</b> 처리되며 어떤 서버로도 전송·저장되지 않습니다. 화면을 닫으면 입력 내용이 사라집니다.</div></div>
+
+  <nav class="stepnav" aria-label="작성 단계">
+    <a href="#s1" class="on"><i>1</i>기본 정보</a>
+    <a href="#s2"><i>2</i>강의 전문 정보</a>
+    <a href="#s3"><i>3</i>동의·서명</a>
+    <a href="#s4"><i>4</i>PDF 만들기·보내기</a>
+  </nav>
+
+  <!-- 1. 기본 정보 -->
+  <section class="card" id="s1">
+    <h2><i>1</i>강사관리카드 · 기본 정보</h2>
+    <p class="desc">* 표시는 꼭 입력해 주세요. 강사료 지급 기준이 되는 학력·자격증은 취득일까지 적어 주세요.</p>
+
+    <div class="photo">
+      <div class="box" id="phBox">사진</div>
+      <div><div class="lbl">증명사진 <span class="opt">(선택)</span></div>
+        <input type="file" id="phFile" accept="image/jpeg,image/png" hidden>
+        <button type="button" class="btn" id="phBtn">사진 고르기</button>
+        <div class="ex">JPG·PNG. 크기를 줄여 카드에 넣습니다.</div></div>
+    </div>
+
+    <div class="grid2">
+      <div class="f"><label for="nm" class="req">성명(한글)</label><input type="text" id="nm" autocomplete="name"></div>
+      <div class="f"><label for="nmH">성명(한자) <span class="opt">(선택)</span></label><input type="text" id="nmH"></div>
+    </div>
+    <div class="f"><label class="lbl">주민등록번호 <span class="opt">(강사수당 지급용)</span></label>
+      <div class="row-rrn"><input type="tel" id="rrn1" inputmode="numeric" maxlength="6" placeholder="앞 6자리" aria-label="주민등록번호 앞 6자리"><span>-</span><input type="tel" id="rrn2" inputmode="numeric" maxlength="7" placeholder="뒤 7자리" aria-label="주민등록번호 뒤 7자리" autocomplete="off"></div>
+      <div class="sens">주민등록번호와 계좌번호는 PDF에만 들어가며, 이 화면은 어디에도 보내거나 저장하지 않습니다. 비워 두고 나중에 담당자에게 전화로 알려 주셔도 됩니다.</div></div>
+    <div class="grid2">
+      <div class="f"><label for="org">소속</label><input type="text" id="org" placeholder="예: OO소방서 예방과"></div>
+      <div class="f"><label for="pos">직위</label><input type="text" id="pos" placeholder="예: 소방경"></div>
+    </div>
+    <div class="f"><span class="lbl">주소 <span class="opt">(직장·자택 중 하나)</span></span>
+      <div class="chips one" style="margin-bottom:8px"><input type="radio" name="addrK" id="adW" value="직장" checked><label for="adW">직장</label><input type="radio" name="addrK" id="adH" value="자택"><label for="adH">자택</label></div>
+      <input type="text" id="addr" aria-label="주소" placeholder="도로명 주소"></div>
+    <div class="grid2">
+      <div class="f"><label for="mob" class="req">휴대전화</label><input type="tel" id="mob" inputmode="numeric" placeholder="010-0000-0000"></div>
+      <div class="f"><label for="telW">직장 전화 <span class="opt">(선택)</span></label><input type="tel" id="telW" inputmode="numeric"></div>
+    </div>
+    <div class="f"><label for="em" class="req">이메일</label><input type="email" id="em" placeholder="배정 안내를 받을 주소"></div>
+    <div class="grid2">
+      <div class="f"><label for="bank">은행 / 예금주</label><input type="text" id="bank" placeholder="예: 농협 / 홍길동"></div>
+      <div class="f"><label for="acct">계좌번호</label><input type="tel" id="acct" inputmode="numeric" autocomplete="off"></div>
+    </div>
+
+    <div class="sub">학력·자격·경력</div>
+    <div class="f"><label for="edu">학력(학위)</label><textarea id="edu" rows="2" placeholder="예) 경기대학교 OO대학원 OOO박사학위 취득(07.7.13. 취득)"></textarea></div>
+    <div class="f"><label for="cert">자격증</label><textarea id="cert" rows="2" placeholder="예) OO기술사(18.5.15. 취득) — 한 줄에 하나씩"></textarea></div>
+    <div class="f"><label for="career">주요이력</label><textarea id="career" rows="3" placeholder="한 줄에 하나씩"></textarea></div>
+    <div class="f"><label for="lect">강의경력</label><textarea id="lect" rows="3" placeholder="출강 기관과 교과목을 한 줄에 하나씩 적어 주세요."></textarea>
+      <div class="ex">향후 유사과정 강사 초빙에 참고합니다.</div></div>
+  </section>
+
+  <!-- 2. 강의 전문 정보 -->
+  <section class="card" id="s2">
+    <h2><i>2</i>강사관리카드 · 강의 전문 정보</h2>
+    <p class="desc">해당되는 것을 누르면 카드에 ■ 표시로 들어갑니다.</p>
+    <div class="f"><span class="lbl">강사 구분</span><div class="chips one" data-g="type"></div></div>
+    <div class="f"><span class="lbl">주 교육 구분 <span class="opt">(1개)</span></span><div class="chips one col" data-g="spec"></div></div>
+    <div class="f"><span class="lbl">전문 분야 <span class="opt">(여러 개)</span></span><div class="chips" data-g="field"></div>
+      <input type="text" id="fieldEtc" placeholder="그 밖의 분야를 골랐으면 적어 주세요" style="margin-top:8px"></div>
+    <div class="f"><label for="kw">강의 키워드</label><input type="text" id="kw" placeholder="예) 리튬배터리 화재, 감식기법, 현장 사례 (쉼표로 구분)"></div>
+    <div class="f"><span class="lbl">강의해 본 교육 대상 <span class="opt">(여러 개)</span></span><div class="chips" data-g="target"></div></div>
+    <div class="f"><span class="lbl">강의 방식 <span class="opt">(여러 개)</span></span><div class="chips" data-g="method"></div></div>
+    <div class="f"><label for="region">활동지역</label><input type="text" id="region" placeholder="예) 전남 동부권"></div>
+    <div class="f"><label for="unav">출강이 어려운 시기 <span class="opt">(해당 시)</span></label><input type="text" id="unav" placeholder="예) 2027.3.~5. / 7월 전체">
+      <div class="chips" data-g="days" style="margin-top:8px"></div></div>
+    <div class="f"><label for="equip">교수 자료 신청</label><input type="text" id="equip" placeholder="예) PPT 활용을 위한 시설(PC, 프로젝터 등)"></div>
+    <div class="f"><span class="lbl">교육자료 사용 동의</span>
+      <div class="ex" style="margin:0 0 8px">본인의 강의에 사용하는 자료를 교육생에게 인쇄물 등으로 제공함을 허락합니다.</div>
+      <div class="yn"><input type="radio" name="agMat" id="agMatY" value="동의함"><label for="agMatY">동의함</label><input type="radio" name="agMat" id="agMatN" value="동의 안함" class="no"><label for="agMatN">동의 안함</label></div></div>
+  </section>
+
+  <!-- 3. 동의·서명 -->
+  <section class="card" id="s3">
+    <h2><i>3</i>개인정보 수집·활용 동의서</h2>
+    <p class="desc">세 항목 각각 동의 여부를 고른 뒤 아래 칸에 서명해 주세요. 동의하지 않아도 불이익은 없으나, 주민등록번호·계좌번호가 없으면 강사수당 입금이 불편할 수 있습니다.</p>
+
+    <div class="cons"><h3>1. 기본 개인정보 수집·이용</h3>
+      <dl><dt>목적</dt><dd>전남소방학교 교수 인력풀 관리 및 강사수당 지급</dd>
+        <dt>항목</dt><dd>성명, 주소, 직업, 전화번호(유선·휴대), 자격사항, 이메일, 주민등록번호, 학력, 경력, 계좌번호</dd>
+        <dt>보유기간</dt><dd>교수 인력풀 관리 및 교수 섭외 활용 종료 시까지(삭제 요청 시 즉시 삭제)</dd></dl>
+      <div class="yn"><input type="radio" name="c1" id="c1y"><label for="c1y">동의함</label><input type="radio" name="c1" id="c1n" class="no"><label for="c1n">동의하지 않음</label></div></div>
+
+    <div class="cons"><h3>2. 고유식별정보(주민등록번호) 수집·이용</h3>
+      <dl><dt>항목</dt><dd>주민등록번호</dd></dl>
+      <div class="yn"><input type="radio" name="c2" id="c2y"><label for="c2y">동의함</label><input type="radio" name="c2" id="c2n" class="no"><label for="c2n">동의하지 않음</label></div></div>
+
+    <div class="cons"><h3>3. 개인정보 제3자 제공</h3>
+      <dl><dt>제공받는 자</dt><dd>전남 소방교육과(교육운영팀, 교육훈련팀) 및 전국 소방교육훈련기관 교수 인력풀 담당자</dd>
+        <dt>목적</dt><dd>출강 강사의 강사수당 입금, 전국 소방교육훈련기관 교수 인력풀 공유(섭외)</dd>
+        <dt>보유기간</dt><dd>3년</dd></dl>
+      <div class="yn"><input type="radio" name="c3" id="c3y"><label for="c3y">동의함</label><input type="radio" name="c3" id="c3n" class="no"><label for="c3n">동의하지 않음</label></div></div>
+    <details class="full"><summary>동의서 전문 보기</summary>
+      <p><b>■ 개인정보의 수집 및 이용목적</b><br>- 전남소방학교 교수 인력풀 관리 및 강사수당 지급</p>
+      <p><b>■ 개인정보의 보유 및 이용기간</b><br>- 교수인력풀 관리 및 교수섭외 활용 종료 시까지<br>- 개인정보 주체자의 삭제 요청 시 즉시 삭제</p>
+      <p><b>■ 기본 개인정보 수집·활용</b><br>수집 항목: 성명, 주소, 직업, 전화번호(유선, 핸드폰), 자격사항, 이메일 주소, 주민등록번호, 학력, 경력, 계좌번호<br>귀하는 개인정보 제공 동의를 거부할 권리가 있으며, 동의 거부에 따른 불이익은 없음. 다만, 주민등록번호, 계좌번호가 없을 시 강사수당 입금 등이 불편할 수 있음.</p>
+      <p><b>■ 고유식별정보 수집·활용</b><br>수집 항목: 주민등록번호<br>귀하는 개인정보 제공 동의를 거부할 권리가 있으며 동의 거부에 따른 불이익은 없음. 다만, 주민등록번호가 없을 시 강사수당 입금 등이 불편할 수 있음.</p>
+      <p><b>■ 개인정보 제3자 제공</b><br>제공받는 자: 전남 소방교육과(교육운영팀, 교육훈련팀) 및 전국 소방교육훈련기관 교수인력풀 담당자<br>이용목적: 출강강사의 강사수당 입금, 전국소방교육훈련기관 교수인력풀 공유(섭외)<br>제공 항목: 성명, 주민등록번호, 계좌번호, 직업, 전공분야, 전화번호 등 개인 기본 개인정보 수집·활용에 수집되는 정보 일체<br>보유 및 이용기간: 3년<br>귀하는 개인정보 제공 동의를 거부할 권리가 있으며 동의 거부에 따른 불이익은 없음. 다만, 성명, 주민등록번호, 계좌번호가 없을 시 강사수당 입금 등이 불편할 수 있음.</p>
+      <p>※ 개인정보 제공자가 동의한 내용외의 다른 목적으로 활용하지 않으며, 제공된 개인정보의 이용을 거부하고자 할 때에는 개인정보보호 책임자를 통해 열람, 정정, 삭제를 요구할 수 있음</p>
+      <p>개인정보 취급자: 전남소방본부 소방교육과 · 개인정보보호 책임자 교육운영팀장 · 061-860-4735</p></details>
+
+    <div class="f"><span class="lbl req">서명</span>
+      <div class="sign" id="signBox"><canvas id="sign"></canvas><div class="base"></div><div class="ph" id="signPh">여기에 손가락이나 마우스로 서명해 주세요</div></div>
+      <div class="signbar"><span id="signDate"></span><button type="button" class="btn" id="signClr" style="height:34px">다시 쓰기</button></div></div>
+  </section>
+
+  <!-- 4. 만들기·보내기 -->
+  <section class="card" id="s4">
+    <h2><i>4</i>PDF 만들기 · 보내기</h2>
+    <ul class="check" id="chk"></ul>
+    <div class="send">
+      <button type="button" class="btn main big" id="mk">PDF 2개 만들기 (강사관리카드 · 동의서)</button>
+      <div class="made hide" id="made"></div>
+      <button type="button" class="btn main big hide" id="share">메일 앱으로 보내기 (PDF 2개 첨부)</button>
+      <button type="button" class="btn big hide" id="dl">이 기기에 내려받기</button>
+    </div>
+    <div class="msg" id="msg" role="status" aria-live="polite"></div>
+    <div class="mailbox"><div><span class="k">받는 주소</span><b id="to">(담당자에게 문의)</b> <button type="button" class="lnk" id="cpTo">복사</button></div>
+      <div><span class="k">메일 제목</span><b id="subj">[강사등록] 성명</b> <button type="button" class="lnk" id="cpSubj">복사</button></div>
+      <div><span class="k">첨부</span><span id="files">성명_강사관리카드.pdf, 성명_동의서.pdf</span></div></div>
+    <p class="note" id="howto">휴대폰: [메일 앱으로 보내기]를 누르고 메일 앱을 고르면 PDF 2개가 첨부됩니다. 받는 주소와 제목을 붙여 넣고 보내 주세요.<br>PC: [이 기기에 내려받기]로 저장한 뒤, 쓰시는 메일에 두 파일을 첨부해 보내 주세요.</p>
+  </section>
+
+  <footer>문의: 교육운영팀 061-860-4735 · 양식(한글)으로 작성하려면 <a href="guide.html">등록 안내</a></footer>
+</div>
+
+<script src="config.js"></script>
+<script src="lib/pdf-lib.min.js" defer></script>
+<script src="lib/fontkit.umd.min.js" defer></script>
+<script src="lib/ion-pdf.js" defer></script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var OPT = {
+    type: ['단독(개인) 강사', '기관 소속 파견 강사'],
+    spec: [['직무교육', '소방업무 수행에 필요한 전문역량'], ['직무역량교육', '직무를 더 잘 수행하기 위한 공통역량'], ['소양교육', '소방공무원으로서 갖춰야 할 기본 가치와 태도']],
+    field: ['화재진압', '구조', '구급·응급의료', '화재조사', '예방·안전점검', '소방시설', '위험물', '재난·상황관리', '소방차량·장비', '체력·안전관리', '법령·행정', '리더십·조직관리', '심리·스트레스', '인문·소양', '디지털·AI', '안전교육·교수법', '그 밖의 분야'],
+    target: ['신규임용자', '재직자(실무자)', '지휘관·관리자', '의용소방대', '일반 국민', '장애인·어린이·노인'],
+    method: ['이론 강의', '실습·실기', '사례·토론', '시뮬레이션·VR', '현장 견학'],
+    days: ['월', '화', '수', '목', '금']
+  };
+  var ONE = { type: 1, spec: 1 };
+  document.querySelectorAll('.chips[data-g]').forEach(function (box) {
+    var g = box.getAttribute('data-g');
+    OPT[g].forEach(function (o, i) {
+      var v = Array.isArray(o) ? o[0] : o, id = g + i;
+      var inp = document.createElement('input'); inp.type = ONE[g] ? 'radio' : 'checkbox'; inp.name = g; inp.id = id; inp.value = v;
+      var lb = document.createElement('label'); lb.htmlFor = id; lb.innerHTML = Array.isArray(o) ? '<span><b>' + v + '</b> <small>' + o[1] + '</small></span>' : (g === 'days' ? v + '요일' : v);
+      box.appendChild(inp); box.appendChild(lb);
+    });
+  });
+
+  // 사진 미리보기(브라우저 안에서만)
+  $('phBtn').onclick = function () { $('phFile').click(); };
+  $('phFile').onchange = function () {
+    var f = this.files[0]; if (!f) return;
+    var u = URL.createObjectURL(f); $('phBox').innerHTML = '<img alt="선택한 사진">'; $('phBox').firstChild.src = u; $('phBtn').textContent = '사진 바꾸기';
+  };
+
+  // 서명
+  var cv = $('sign'), ctx, drawing = false, signed = false, last = null;
+  function fit() { var r = cv.getBoundingClientRect(), d = window.devicePixelRatio || 1; var img = signed ? cv.toDataURL() : null; cv.width = r.width * d; cv.height = r.height * d; ctx = cv.getContext('2d'); ctx.scale(d, d); ctx.lineWidth = 2.4; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#111';
+    if (img) { var im = new Image(); im.onload = function () { ctx.drawImage(im, 0, 0, r.width, r.height); }; im.src = img; } }
+  function pt(e) { var r = cv.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
+  cv.addEventListener('pointerdown', function (e) { drawing = true; last = pt(e); cv.setPointerCapture(e.pointerId); $('signPh').style.display = 'none'; });
+  cv.addEventListener('pointermove', function (e) { if (!drawing) return; var p = pt(e); ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(p.x, p.y); ctx.stroke(); last = p; signed = true; });
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (t) { cv.addEventListener(t, function () { drawing = false; status(); }); });
+  $('signClr').onclick = function () { signed = false; fit(); $('signPh').style.display = ''; status(); };
+  window.addEventListener('resize', fit); fit();
+  var d0 = new Date(); $('signDate').textContent = d0.getFullYear() + '년 ' + (d0.getMonth() + 1) + '월 ' + d0.getDate() + '일';
+
+  // 확인 목록·파일 이름
+  function status() {
+    var nm = $('nm').value.trim() || '성명';
+    var ok = function (b) { return b ? '<b class="okk">완료</b>' : '<b class="no">필요</b>'; };
+    var cs = ['c1', 'c2', 'c3'].every(function (n) { return document.querySelector('input[name=' + n + ']:checked'); });
+    $('chk').innerHTML = '<li><span>성명·휴대전화·이메일</span>' + ok($('nm').value.trim() && $('mob').value.trim() && $('em').value.trim()) + '</li>' +
+      '<li><span>동의 여부 3개 선택</span>' + ok(cs) + '</li><li><span>서명</span>' + ok(signed) + '</li>' +
+      '<li><span>주민등록번호·계좌 <small class="opt">(선택)</small></span>' + ($('rrn1').value && $('acct').value ? '<b class="okk">입력함</b>' : '<b style="color:#6B7480">비워 둠</b>') + '</li>';
+    $('subj').textContent = '[강사등록] ' + nm; $('files').textContent = nm + '_강사관리카드.pdf, ' + nm + '_동의서.pdf';
+  }
+  document.addEventListener('input', status); document.addEventListener('change', status); status();
+
+  // ---------- PDF 만들기·보내기(모두 이 브라우저 안에서) ----------
+  var CFG = window.RELAY_CONFIG || {};
+  if (CFG.officialMail) $('to').textContent = CFG.officialMail;
+  var PHOTO = null, FILES = null, URLS = [];
+  $('phFile').addEventListener('change', function () { PHOTO = this.files[0] || null; });
+  var FONT = {};
+  function font(n) {
+    if (!FONT[n]) FONT[n] = fetch('lib/fonts/ion-' + n + '.woff').then(function (r) { if (!r.ok) throw new Error('글꼴을 불러오지 못했습니다'); return r.arrayBuffer(); });
+    FONT[n].catch(function () { delete FONT[n]; });
+    return FONT[n];
+  }
+  window.addEventListener('load', function () { setTimeout(function () { font('Regular'); font('Bold'); }, 600); });   // 미리 받아 두기(약 1.8MB, 한 번만)
+  function val(id) { return $(id).value.trim(); }
+  function picked(name) { return Array.prototype.map.call(document.querySelectorAll('input[name=' + name + ']:checked'), function (x) { return x.value; }); }
+  function yn(n) { return $(n + 'y').checked ? true : ($(n + 'n').checked ? false : null); }
+  function collect() {
+    return { nm: val('nm'), nmH: val('nmH'), rrn1: val('rrn1').replace(/\D/g, ''), rrn2: val('rrn2').replace(/\D/g, ''), org: val('org'), pos: val('pos'),
+      addrK: $('adH').checked ? '자택' : '직장', addr: val('addr'), mob: val('mob'), telW: val('telW'), em: val('em'), bank: val('bank'), acct: val('acct'),
+      edu: $('edu').value.trim(), cert: $('cert').value.trim(), career: $('career').value.trim(), lect: $('lect').value.trim(),
+      type: picked('type')[0] || '', spec: picked('spec')[0] || '', field: picked('field'), fieldEtc: val('fieldEtc'), kw: val('kw'),
+      target: picked('target'), method: picked('method'), region: val('region'), unav: val('unav'), days: picked('days'), equip: val('equip'),
+      agMat: picked('agMat')[0] || '', c1: yn('c1'), c2: yn('c2'), c3: yn('c3') };
+  }
+  // 휴대전화 자동 줄표
+  $('mob').addEventListener('blur', function () { var d = this.value.replace(/\D/g, ''); if (/^01\d{8,9}$/.test(d)) this.value = d.slice(0, 3) + '-' + d.slice(3, d.length - 4) + '-' + d.slice(-4); });
+  function problems(d) {
+    var p = [];
+    if (!d.nm) p.push(['nm', '성명을 입력해 주세요.']);
+    if (!/^01\d-?\d{3,4}-?\d{4}$/.test(d.mob.replace(/\s/g, ''))) p.push(['mob', '휴대전화 번호를 확인해 주세요. 예) 010-1234-5678']);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.em)) p.push(['em', '이메일 주소를 확인해 주세요.']);
+    if ((d.rrn1 || d.rrn2) && !(/^\d{6}$/.test(d.rrn1) && /^\d{7}$/.test(d.rrn2))) p.push(['rrn1', '주민등록번호는 앞 6자리, 뒤 7자리입니다. 모르시면 두 칸 모두 비워 두세요.']);
+    ['c1', 'c2', 'c3'].forEach(function (c, i) { if (d[c] === null) p.push([c + 'y', '동의서 ' + (i + 1) + '번 항목의 동의 여부를 골라 주세요.']); });
+    if (!signed) p.push(['signBox', '동의서에 서명해 주세요.']);
+    return p;
+  }
+  function say(t, ok) { var m = $('msg'); m.textContent = t; m.className = 'msg ' + (ok ? 'ok' : 'bad'); }
+  function safeName(n) { return (n || '강사').replace(/[\\/:*?"<>|\s]+/g, ''); }
+  function blobBytes(b) { return b.arrayBuffer().then(function (x) { return new Uint8Array(x); }); }
+  function photoBytes() {   // 사진을 600px 이내 JPG로 줄임(이 기기 안에서)
+    if (!PHOTO) return Promise.resolve(null);
+    return new Promise(function (res, rej) {
+      var im = new Image(), u = URL.createObjectURL(PHOTO);
+      im.onload = function () {
+        var sc = Math.min(1, 600 / Math.max(im.naturalWidth, im.naturalHeight)), c = document.createElement('canvas');
+        c.width = Math.round(im.naturalWidth * sc); c.height = Math.round(im.naturalHeight * sc);
+        var x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); x.drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(u);
+        c.toBlob(function (b) { b ? blobBytes(b).then(function (y) { res({ bytes: y, type: 'jpg' }); }) : rej(new Error('사진을 줄이지 못했습니다')); }, 'image/jpeg', 0.85);
+      };
+      im.onerror = function () { rej(new Error('사진 파일을 읽지 못했습니다. JPG나 PNG로 골라 주세요.')); };
+      im.src = u;
+    });
+  }
+  function signBytes() {   // 서명 부분만 잘라 PNG로
+    var w = cv.width, h = cv.height, data = ctx.getImageData(0, 0, w, h).data, x0 = w, y0 = h, x1 = -1, y1 = -1;
+    for (var y = 0; y < h; y += 2) for (var x = 0; x < w; x += 2) if (data[(y * w + x) * 4 + 3] > 20) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    if (x1 < 0) return Promise.resolve(null);
+    var pad = 8, c = document.createElement('canvas'); x0 = Math.max(0, x0 - pad); y0 = Math.max(0, y0 - pad); x1 = Math.min(w, x1 + pad); y1 = Math.min(h, y1 + pad);
+    c.width = x1 - x0; c.height = y1 - y0; c.getContext('2d').drawImage(cv, x0, y0, c.width, c.height, 0, 0, c.width, c.height);
+    return new Promise(function (res) { c.toBlob(function (b) { blobBytes(b).then(res); }, 'image/png'); });
+  }
+  function kb(n) { return n < 1048576 ? Math.max(1, Math.round(n / 1024)) + 'KB' : (n / 1048576).toFixed(1) + 'MB'; }
+  var canShare = false;
+  $('mk').onclick = async function () {
+    var d = collect(), p = problems(d);
+    if (p.length) {
+      say(p[0][1] + (p.length > 1 ? ' (그 밖에 ' + (p.length - 1) + '건)' : ''), false);
+      var el = $(p[0][0]); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); if (el.focus && el.tagName !== 'DIV') setTimeout(function () { el.focus({ preventScroll: true }); }, 350);
+      return;
+    }
+    if (!window.PDFLib || !window.fontkit || !window.IonPdf) return say('PDF 만들기 기능을 불러오는 중입니다. 잠시 후 다시 눌러 주세요.', false);
+    var b = this; b.disabled = true; b.textContent = 'PDF 만드는 중…'; say('', true);
+    try {
+      var han = /[㐀-鿿豈-﫿]/.test(d.nmH);
+      var got = await Promise.all([font('Regular'), font('Bold'), han ? font('hanja') : null, photoBytes(), signBytes()]);
+      var r = await IonPdf.make(d, { fonts: { regular: got[0], bold: got[1], hanja: got[2] }, photo: got[3], sign: got[4], today: new Date() });
+      var n = safeName(d.nm);
+      FILES = [new File([r.card], n + '_강사관리카드.pdf', { type: 'application/pdf' }), new File([r.consent], n + '_동의서.pdf', { type: 'application/pdf' })];
+      URLS.forEach(URL.revokeObjectURL); URLS = FILES.map(function (f) { return URL.createObjectURL(f); });
+      $('made').className = 'made';
+      $('made').innerHTML = '<b>PDF 2개를 만들었습니다.</b> 눌러서 내용을 확인해 보세요.<br>' + FILES.map(function (f, i) { return '<a href="' + URLS[i] + '" target="_blank" rel="noopener">' + f.name + '</a> (' + kb(f.size) + ')'; }).join('<br>');
+      canShare = !!(navigator.canShare && navigator.canShare({ files: FILES }));
+      $('share').classList.toggle('hide', !canShare); $('dl').classList.remove('hide');
+      $('dl').classList.toggle('main', !canShare);
+      say('', true);
+    } catch (e) { say('PDF를 만들지 못했습니다: ' + (e && e.message || e) + ' · 계속되면 서식(한글 파일)으로 작성해 주세요.', false); }
+    b.disabled = false; b.textContent = 'PDF 다시 만들기';
+  };
+  // 만든 뒤 내용을 바꾸면 다시 만들게 함
+  function stale() { if (!FILES) return; FILES = null; $('made').className = 'made old'; $('made').textContent = '내용을 바꿨습니다. [PDF 다시 만들기]를 눌러 주세요.'; $('share').classList.add('hide'); $('dl').classList.add('hide'); }
+  document.addEventListener('input', function (e) { if (e.target.closest && e.target.closest('#s1,#s2,#s3')) stale(); });
+  document.addEventListener('change', function (e) { if (e.target.closest && e.target.closest('#s1,#s2,#s3')) stale(); });
+  cv.addEventListener('pointerup', stale); $('signClr').addEventListener('click', stale);
+  $('share').onclick = function () {
+    if (!FILES) return;
+    navigator.share({ files: FILES, title: $('subj').textContent, text: $('subj').textContent }).then(function () { say('메일 앱에서 받는 주소와 제목을 넣어 보내 주세요.', true); })
+      .catch(function (e) { if (e && e.name !== 'AbortError') say('보내기 화면을 열지 못했습니다. [이 기기에 내려받기]를 이용해 주세요.', false); });
+  };
+  $('dl').onclick = function () {
+    if (!FILES) return;
+    FILES.forEach(function (f, i) { setTimeout(function () { var a = document.createElement('a'); a.href = URLS[i]; a.download = f.name; document.body.appendChild(a); a.click(); a.remove(); }, i * 500); });
+    say('내려받았습니다. 쓰시는 메일에 두 파일을 첨부해 보내 주세요.', true);
+  };
+  function copy(t, what) {
+    var done = function () { say(what + '를 복사했습니다.', true); };
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(t).then(done, function () { fallback(); });
+    fallback();
+    function fallback() { var x = document.createElement('textarea'); x.value = t; document.body.appendChild(x); x.select(); try { document.execCommand('copy'); done(); } catch (e) {} x.remove(); }
+  }
+  $('cpTo').onclick = function () { if (CFG.officialMail) copy(CFG.officialMail, '받는 주소'); else say('받는 주소는 담당자에게 문의해 주세요(061-860-4735).', false); };
+  $('cpSubj').onclick = function () { copy($('subj').textContent, '메일 제목'); };
+
+  // 단계 표시: 보이는 구역 강조
+  var nav = document.querySelectorAll('.stepnav a');
+  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) nav.forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id); }); }); }, { rootMargin: '-40% 0px -55% 0px' });
+  ['s1', 's2', 's3', 's4'].forEach(function (id) { io.observe($(id)); });
+})();
+</script>
+<div style="text-align:center;font-size:11px;color:#9AA3AF;padding:4px 0 18px">화면 버전 2026-11-15 웹 작성 1</div>
+</body>
+</html>
