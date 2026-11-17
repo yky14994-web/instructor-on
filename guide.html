@@ -230,6 +230,19 @@
     <div class="hint">등록되면 담당자가 메일로 알려 드립니다. 서류에 적으신 개인정보는 공직자 메일과 학교 업무용 컴퓨터에서만 다루며, 민간 클라우드(구글 등)에는 저장하지 않습니다. 이용 목적·보유기간 등은 동의서에 적힌 대로입니다.</div>
   </div>
 
+  <div class="card" id="plan">
+    <div class="card-title">강의계획서 제출 <span style="font-weight:400;font-size:13.5px;color:#52606D;">(강의가 배정된 뒤)</span></div>
+    <ol class="steps">
+      <li>양식을 내려받아 작성합니다(교안 요약서 + 이론교재).
+        <div class="dl"><a class="form-download" href="forms/lecture-plan.hwpx" download="강의계획서_양식.hwpx">↓ 강의계획서 양식</a></div></li>
+      <li><div class="pdfnote"><b>PDF 한 파일로 저장해 주세요.</b> 한글 파일(.hwpx) 그대로는 받을 수 없습니다.</div></li>
+      <li>배정 안내 문자의 <b>[제출하기]</b>를 누르면 받는 주소와 제목이 채워진 메일이 열립니다. PDF를 첨부해 보내 주세요.<br>문자가 없거나 PC에서 보내실 때는 아래 주소와 제목으로 보내 주세요.</li>
+    </ol>
+    <div class="mailbox"><div>받는 주소 <span style="font-weight:400">(두 곳 모두)</span></div><div class="addr js-plan-mail">(담당자에게 문의)</div>
+      <div style="margin-top:6px">메일 제목: <b>[강의계획서] 교과목 / 월-일</b> <span style="font-weight:400;color:#52606D">예) [강의계획서] 증거 수집 / 11-17</span></div></div>
+    <div class="hint">접수되면 "접수되었습니다" 확인 메일을 보내 드립니다.</div>
+  </div>
+
   <footer class="contact">문의사항이 있으시면<br><b class="js-name">교육운영팀</b> <b class="js-phone">061-860-4735</b>로 연락 주시기 바랍니다.</footer>
 </div>
 <script>
@@ -237,6 +250,8 @@
     var cfg = window.RELAY_CONFIG || {};
     var m = document.querySelector('.js-mail'); if (cfg.officialMail) { m.textContent = cfg.officialMail; m.classList.add('set'); }
     if (cfg.contactPhone) document.querySelector('.js-phone').textContent = cfg.contactPhone;
+    var pm = [cfg.officialMail, cfg.planMail2].filter(function (x, i, a) { return x && a.indexOf(x) === i; });
+    if (pm.length) { var pe = document.querySelector('.js-plan-mail'); pe.style.whiteSpace = 'pre-line'; pe.textContent = pm.join('\n'); pe.classList.add('set'); }
     var cb = document.querySelector('.js-copy'), ok = document.querySelector('.js-copyok');
     if (cfg.officialMail) cb.disabled = false;
     else { cb.title = '주소 준비 중'; cb.setAttribute('aria-label', '주소 준비 중'); }
@@ -250,6 +265,6 @@
     });
   })();
 </script>
-<div id="verStamp" style="text-align:center;font-size:11px;color:#9AA3AF;padding:14px 0 18px;font-family:'Pretendard',sans-serif;">화면 버전 2026-11-15 내부망판 안내 3 외래강사 안내</div>
+<div id="verStamp" style="text-align:center;font-size:11px;color:#9AA3AF;padding:14px 0 18px;font-family:'Pretendard',sans-serif;">화면 버전 2026-11-17 행정망판 안내 3 외래강사 안내</div>
 </body>
 </html>
