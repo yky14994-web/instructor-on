@@ -299,7 +299,11 @@
   $('phFile').addEventListener('change', function () { PHOTO = this.files[0] || null; });
   var FONT = {};
   function font(n) {
-    if (!FONT[n]) FONT[n] = fetch('lib/fonts/ion-' + n + '.woff').then(function (r) { if (!r.ok) throw new Error('글꼴을 불러오지 못했습니다'); return r.arrayBuffer(); });
+    if (!FONT[n]) FONT[n] = fetch('lib/fonts/ion-' + n + '.woff').then(function (r) { if (!r.ok) throw new Error('글꼴을 불러오지 못했습니다'); return r.arrayBuffer(); })
+      .then(function (b) {   // 압축을 미리 풀어 두면 PDF 만들기가 수십 초 → 1초 이내
+        if (!window.IonPdf || typeof DecompressionStream === 'undefined') return b;
+        return IonPdf.woffToSfnt(b, IonPdf.browserInflate).catch(function () { return b; });
+      });
     FONT[n].catch(function () { delete FONT[n]; });
     return FONT[n];
   }
@@ -409,6 +413,6 @@
   ['s1', 's2', 's3', 's4'].forEach(function (id) { io.observe($(id)); });
 })();
 </script>
-<div style="text-align:center;font-size:11px;color:#9AA3AF;padding:4px 0 18px">화면 버전 2026-11-15 웹 작성 1</div>
+<div style="text-align:center;font-size:11px;color:#9AA3AF;padding:4px 0 18px">화면 버전 2026-11-17 웹 작성 2</div>
 </body>
 </html>
