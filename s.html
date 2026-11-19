@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex">
+<title>설문 (담당자용) · 전남소방학교</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+  :root { --navy:#1B3A5F; --navy-d:#142a45; --main:#3A6EA5; --text:#1a1a1a; --sub:#4A4946; --muted:#6B7480; --line:#E1E5EA; --input:#C9D1DA; --bg:#F0F2F5; --bad:#B42318; --ok:#1E7B4A; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:'Pretendard',-apple-system,'Malgun Gothic',sans-serif; background:var(--bg); color:var(--text); font-size:15px; }
+  .wrap { max-width:640px; margin:0 auto; padding:20px 16px 60px; }
+  .sysbrand { display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:#10263F; color:#fff; border-radius:10px; margin-bottom:16px; }
+  .sysbrand b { font-size:15px; } .sysbrand em { font-style:normal; color:#FFB38A; } .sysbrand small { font-size:12px; opacity:.85; }
+  h1 { font-size:22px; margin:4px 0 6px; letter-spacing:-.4px; }
+  h2 { font-size:16px; margin:0 0 10px; color:var(--navy); }
+  .lead { color:var(--sub); line-height:1.65; margin:0 0 14px; word-break:keep-all; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:12px; }
+  .k { font-size:13px; color:var(--muted); }
+  .course { font-size:18px; font-weight:800; color:var(--navy); margin:2px 0 4px; word-break:keep-all; }
+  ul.list { margin:8px 0 0; padding-left:18px; line-height:1.7; color:var(--sub); font-size:14px; }
+  ul.list span { color:var(--muted); font-size:12.5px; }
+  .btn { display:flex; align-items:center; justify-content:center; width:100%; height:52px; margin-top:12px; border-radius:10px; border:0; background:var(--navy); color:#fff; font-size:17px; font-weight:700; font-family:inherit; cursor:pointer; text-decoration:none; }
+  .btn:hover { background:var(--navy-d); } .btn:disabled { opacity:.5; cursor:default; }
+  .sbtn { flex:1; min-height:42px; padding:0 10px; border-radius:8px; border:1px solid var(--input); background:#fff; color:var(--navy); font-weight:700; font-size:14px; font-family:inherit; cursor:pointer; text-decoration:none; display:flex; align-items:center; justify-content:center; }
+  .row { display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
+  label { display:block; font-size:13px; font-weight:700; color:var(--sub); margin:10px 0 4px; }
+  input { width:100%; height:44px; border:1px solid var(--input); border-radius:8px; padding:0 10px; font-size:15px; font-family:inherit; }
+  textarea { width:100%; border:1px solid var(--input); border-radius:8px; padding:10px; font-size:14px; font-family:inherit; line-height:1.6; }
+  .msg { min-height:20px; margin-top:8px; font-size:14px; font-weight:600; line-height:1.55; word-break:keep-all; }
+  .msg.bad { color:var(--bad); } .msg.ok { color:var(--ok); }
+  .note { font-size:13px; color:var(--muted); line-height:1.6; margin-top:8px; word-break:keep-all; }
+  .big { font-size:30px; font-weight:800; color:var(--navy); }
+  .hide { display:none !important; }
+  .tag { display:inline-block; padding:2px 8px; border-radius:6px; background:#EEF3F9; color:var(--navy); font-weight:700; font-size:13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="sysbrand"><div><b>소방교육 외래강사 <em>ON</em></b></div><small>담당자용</small></div>
+  <h1 id="title">설문</h1>
+  <p class="lead" id="lead">행정망 평가관리 화면의 QR로 여는 화면입니다.</p>
+
+  <!-- 설문 생성기 연결(이 휴대폰에만 기억) -->
+  <div class="card" id="setCard">
+    <h2>설문 생성기 연결 <span class="tag" id="setState">처음 한 번</span></h2>
+    <div id="setForm">
+      <div class="note">행정망용 '설문 생성기' 구글 시트를 웹 앱으로 배포할 때 받은 주소와, 스크립트 속성 SURVEY_API_KEY에 넣은 비밀값을 넣습니다. <b>이 휴대폰에만 기억</b>되고 다른 곳으로 보내지 않습니다.</div>
+      <label for="inUrl">웹 앱 주소</label><input id="inUrl" inputmode="url" autocomplete="off" placeholder="https://script.google.com/macros/s/…/exec">
+      <label for="inKey">비밀값</label><input id="inKey" type="password" autocomplete="off">
+      <button type="button" class="btn" id="setBtn">연결 확인하고 저장</button>
+    </div>
+    <div id="setDone" class="hide"><div class="note">연결되어 있습니다. <button type="button" class="sbtn" id="setEdit" style="display:inline-flex;min-height:32px;margin-left:6px">고치기</button></div></div>
+    <div class="msg" id="setMsg" role="status"></div>
+  </div>
+
+  <div id="main"></div>
+
+  <div style="text-align:center;font-size:11px;color:#9AA3AF;padding:8px 0 18px">화면 버전 2026-11-19 설문 담당자용 1</div>
+</div>
+<script src="config.js"></script>
+<script>
+(function () {
+  'use strict';
+  var cfg = window.RELAY_CONFIG || {};
+  var LS_URL = 'ion_sv_url', LS_KEY = 'ion_sv_key';
+  var URL_RE = /^https:\/\/script\.google\.com\/(a\/macros\/[^\/]+|macros)\/s\/[\w-]+\/exec$/;
+  function $(id) { return document.getElementById(id); }
+  function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+  function get(k) { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } }
+  function put(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function say(id, t, bad) { var m = $(id); m.className = 'msg ' + (bad ? 'bad' : 'ok'); m.textContent = t; }
+  function copy(t, cb) {
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(t).then(cb, fb);
+    fb();
+    function fb() { var a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select(); try { document.execCommand('copy'); cb(); } catch (e) {} a.remove(); }
+  }
+
+  // ---- 주소 '#' 뒤(서버로 가지 않음): m=설문 만들기, r=결과 받기 / 1=압축, 0=압축 안 함 ----
+  async function decodeHash(h) {
+    var m = /^#([mr])([01])([A-Za-z0-9_-]+)$/.exec(h || '');
+    if (!m) return null;
+    var b = m[3].replace(/-/g, '+').replace(/_/g, '/'); while (b.length % 4) b += '=';
+    var bin = atob(b), u = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+    if (m[2] === '1') {
+      if (!window.DecompressionStream) throw new Error('이 휴대폰의 브라우저가 오래되어 열 수 없습니다. 브라우저(크롬·사파리)를 최신으로 업데이트해 주세요.');
+      u = new Uint8Array(await new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer());
+    }
+    return { mode: m[1], data: JSON.parse(new TextDecoder().decode(u)) };
+  }
+  // 압축 형식 [과정, 입교 시작일, 입교 종료일, [[교과목, 가린 강사 이름, 'T'(훈련)|'L'(강의)], …]] → 설문 생성기가 읽는 설문 파일
+  function toFile(a) {
+    return { 형식: '외래강사ON 설문 파일', v: 1, 과정: String(a[0] || ''), '입교 시작일': String(a[1] || ''), '입교 종료일': String(a[2] || ''),
+      만든때: '', 교과목: (a[3] || []).map(function (r) { return { 교과목: String(r[0] || ''), 강사: String(r[1] || ''), 문항: r[2] === 'T' ? '훈련' : '강의' }; }) };
+  }
+
+  async function api(body) {
+    var url = get(LS_URL), key = get(LS_KEY);
+    if (!url || !key) throw new Error('위 [설문 생성기 연결]을 먼저 저장해 주세요.');
+    body.key = key;
+    var r;
+    try { r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body), redirect: 'follow' }); }
+    catch (e) { throw new Error('설문 생성기에 연결하지 못했습니다. 휴대폰 인터넷(데이터·와이파이)과 웹 앱 주소를 확인해 주세요.'); }
+    var j; try { j = await r.json(); } catch (e) { throw new Error('설문 생성기 응답을 읽지 못했습니다. 웹 앱 배포의 액세스가 \'모든 사용자\'인지 확인해 주세요.'); }
+    if (!j || j.status !== 'ok') throw new Error((j && j.message) || '설문 생성기 오류');
+    return j;
+  }
+
+  // ---- 연결 설정 ----
+  function showSet() {
+    var ok = !!(get(LS_URL) && get(LS_KEY));
+    $('setForm').classList.toggle('hide', ok); $('setDone').classList.toggle('hide', !ok);
+    $('setState').textContent = ok ? '연결됨' : '처음 한 번';
+    if (!ok) { $('inUrl').value = get(LS_URL); }
+  }
+  $('setEdit').onclick = function () { $('setForm').classList.remove('hide'); $('setDone').classList.add('hide'); $('inUrl').value = get(LS_URL); };
+  $('setBtn').onclick = async function () {
+    var u = $('inUrl').value.trim(), k = $('inKey').value.trim();
+    if (!URL_RE.test(u)) return say('setMsg', '웹 앱 주소 형식(https://script.google.com/macros/s/…/exec)이 아닙니다.', true);
+    if (!k) return say('setMsg', '비밀값을 넣어 주세요.', true);
+    var old = [get(LS_URL), get(LS_KEY)];
+    put(LS_URL, u); put(LS_KEY, k); this.disabled = true; say('setMsg', '확인하는 중입니다…');
+    try {
+      var j = await api({ action: 'ping' });
+      var mv = /^v(\d+)$/.exec(j.version || ''); if (!mv || +mv[1] < 10) throw new Error('설문 생성기가 ' + (j.version || '이전') + ' 버전입니다. 행정망용 v10 코드를 붙여넣고 배포해 주세요.');
+      $('inKey').value = ''; say('setMsg', '연결했습니다(설문 생성기 ' + j.version + ').'); showSet(); start();
+    } catch (e) { put(LS_URL, old[0]); put(LS_KEY, old[1]); say('setMsg', e.message, true); }
+    this.disabled = false;
+  };
+
+  // ---- 설문 만들기 ----
+  function shareBox(main, j, note) {
+    var c = el('div', 'card');
+    c.appendChild(el('h2', '', note));
+    c.appendChild(el('div', 'note', '아래 문장을 복사해 교육생 단체톡에 올리세요.'));
+    var t = el('textarea'); t.rows = 7; t.readOnly = true; t.value = j.text || j.link || ''; c.appendChild(t);
+    var row = el('div', 'row');
+    var b1 = el('button', 'sbtn', '문장 복사'); b1.type = 'button';
+    var b2 = el('button', 'sbtn', '링크만 복사'); b2.type = 'button';
+    var a = el('a', 'sbtn', '설문 열기'); a.href = j.link || j.url || '#'; a.target = '_blank'; a.rel = 'noopener';
+    var m = el('div', 'msg');
+    b1.onclick = function () { copy(t.value, function () { m.className = 'msg ok'; m.textContent = '문장을 복사했습니다. 단체톡에 붙여넣으세요.'; }); };
+    b2.onclick = function () { copy(j.link || j.url || '', function () { m.className = 'msg ok'; m.textContent = '링크를 복사했습니다.'; }); };
+    row.appendChild(b1); row.appendChild(b2); row.appendChild(a); c.appendChild(row); c.appendChild(m);
+    main.appendChild(c);
+    return c;
+  }
+  function makeView(file) {
+    var main = $('main'); main.innerHTML = '';
+    $('title').textContent = '설문 만들기';
+    $('lead').textContent = '과정 내용을 확인하고 [설문 만들기]를 누르면 구글 설문과 단체톡 안내 문장이 만들어집니다.';
+    var c = el('div', 'card');
+    c.appendChild(el('div', 'k', '과정'));
+    c.appendChild(el('div', 'course', file.과정));
+    if (file['입교 시작일']) c.appendChild(el('div', 'k', file['입교 시작일'] + ' ~ ' + file['입교 종료일']));
+    c.appendChild(el('div', 'k', '교과목·강사 ' + file.교과목.length + '건 (강사 이름은 가운데 글자를 가림)')).style.marginTop = '8px';
+    var ul = el('ul', 'list');
+    file.교과목.forEach(function (r) { var li = el('li', '', r.교과목 + ' '); li.appendChild(el('span', '', (r.강사 || '강사 미정') + ' · ' + r.문항)); ul.appendChild(li); });
+    c.appendChild(ul);
+    var go = el('button', 'btn', '설문 만들기'); go.type = 'button'; c.appendChild(go);
+    var m = el('div', 'msg'); m.setAttribute('role', 'status'); c.appendChild(m);
+    main.appendChild(c);
+    var text = JSON.stringify(file), box = null;
+    function run(force) {
+      go.disabled = true; m.className = 'msg'; m.textContent = force ? '새로 만드는 중입니다…(30초쯤 걸립니다)' : '만드는 중입니다…(30초쯤 걸립니다)';
+      api({ action: 'createFromFile', file: text, force: !!force }).then(function (j) {
+        if (box) box.remove();
+        m.textContent = '';
+        if (j.exists) {
+          box = shareBox(main, j, '이미 만든 설문이 있습니다 (' + (j.createdAt || '') + ')');
+          var again = el('button', 'sbtn', '새로 다시 만들기 (이전 설문은 응답 받기를 닫음)'); again.type = 'button'; again.style.marginTop = '10px'; again.style.width = '100%';
+          again.onclick = function () { if (confirm('이 과정의 설문을 새로 만들까요?\n이전 설문은 응답 받기를 닫고 제목 앞에 [이전]을 붙입니다.')) run(true); };
+          box.appendChild(again);
+          go.disabled = false; go.textContent = '설문 확인';
+        } else {
+          box = shareBox(main, j, '설문을 만들었습니다 (교과목·강사 ' + j.count + '건' + (j.mins ? ', 약 ' + j.mins + '분' : '') + ')');
+          if (j.warnings && j.warnings.length) box.appendChild(el('div', 'note', '설문문항 탭 확인: ' + j.warnings.join(' / ')));
+          go.classList.add('hide');
+        }
+        box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }).catch(function (e) { go.disabled = false; m.className = 'msg bad'; m.textContent = e.message; });
+    }
+    go.onclick = function () { run(false); };
+  }
+
+  // ---- 결과 받기 ----
+  function resultView(course) {
+    var main = $('main'); main.innerHTML = '';
+    $('title').textContent = '설문 결과 받기';
+    $('lead').textContent = '응답 수를 확인하고, 결과 파일(CSV)을 공직자 메일로 보내 행정망 평가관리에 올립니다.';
+    var c = el('div', 'card');
+    c.appendChild(el('div', 'k', '과정')); c.appendChild(el('div', 'course', course));
+    var st = el('div', 'note', '응답 수를 확인하는 중입니다…'); c.appendChild(st);
+    var go = el('button', 'btn hide', '결과 파일 보내기'); go.type = 'button'; c.appendChild(go);
+    var dl = el('a', 'sbtn hide', '파일로 저장'); dl.style.marginTop = '8px';
+    var to = [cfg.officialMail, cfg.planMail2].filter(function (x, i, a) { return x && a.indexOf(x) === i; });
+    var tip = el('div', 'note hide');
+    tip.innerHTML = '공유 창에서 <b>메일 앱</b>을 고르고 받는 사람에 공직자 메일 주소를 넣어 보냅니다.' + (to.length ? '<br>받는 주소 예: <b>' + to[0] + '</b>' : '') +
+      '<br>행정망에서는 메일 첨부를 <b>메일첨부받기</b> 폴더에 저장한 뒤 평가관리 → 과정 → 2. 결과·반영 → <b>응답 CSV 파일 올리기</b>로 올립니다.';
+    var m = el('div', 'msg'); m.setAttribute('role', 'status');
+    var re = el('button', 'sbtn', '다시 확인'); re.type = 'button'; re.style.marginTop = '8px';
+    c.appendChild(dl); c.appendChild(tip); c.appendChild(m); c.appendChild(re);
+    if (to.length) { var cp = el('button', 'sbtn', '받는 주소 복사'); cp.type = 'button'; cp.style.marginTop = '8px'; cp.onclick = function () { copy(to[0], function () { m.className = 'msg ok'; m.textContent = '받는 주소를 복사했습니다.'; }); }; c.appendChild(cp); }
+    main.appendChild(c);
+    var file = null;
+    function load() {
+      st.textContent = '응답 수를 확인하는 중입니다…'; go.classList.add('hide'); dl.classList.add('hide'); tip.classList.add('hide'); m.textContent = '';
+      api({ action: 'getResponses', course: course }).then(function (j) {
+        if (!j.exists) { st.innerHTML = ''; st.appendChild(el('b', '', j.deleted ? '설문이 드라이브에서 지워졌습니다.' : '이 과정으로 만든 설문이 없습니다.')); return; }
+        st.innerHTML = '';
+        var big = el('div', 'big', j.count + '명'); st.appendChild(big);
+        st.appendChild(el('div', '', '응답' + (j.last ? ' · 마지막 응답 ' + j.last : '') + (j.createdAt ? ' · 설문 만든 날 ' + j.createdAt : '')));
+        if (!j.count) { st.appendChild(el('div', '', '아직 응답이 없습니다.')); return; }
+        file = new File([j.csv], j.fileName || (course + '_설문응답.csv'), { type: 'text/csv' });
+        dl.href = URL.createObjectURL(file); dl.download = file.name;
+        var canShare = !!(navigator.canShare && navigator.canShare({ files: [file] }));
+        go.classList.toggle('hide', !canShare); dl.classList.remove('hide'); tip.classList.remove('hide');
+        if (!canShare) tip.insertAdjacentHTML('afterbegin', '이 휴대폰은 바로 공유가 안 됩니다. [파일로 저장] 후 메일에 첨부해 주세요.<br>');
+      }).catch(function (e) { st.textContent = ''; m.className = 'msg bad'; m.textContent = e.message; });
+    }
+    go.onclick = function () {
+      if (!file) return;
+      navigator.share({ files: [file], title: file.name }).then(function () { m.className = 'msg ok'; m.textContent = '공유 창으로 보냈습니다. 메일이 발송되었는지 메일 앱에서 확인해 주세요.'; })
+        .catch(function (e) { if (e && e.name === 'AbortError') return; m.className = 'msg bad'; m.textContent = '공유하지 못했습니다. [파일로 저장] 후 메일에 첨부해 주세요.'; });
+    };
+    re.onclick = load;
+    load();
+  }
+
+  var PARSED = null;
+  function start() {
+    if (!PARSED) return;
+    if (!(get(LS_URL) && get(LS_KEY))) { $('main').innerHTML = ''; return; }
+    if (PARSED.mode === 'm') makeView(toFile(PARSED.data)); else resultView(String(PARSED.data[0] || ''));
+  }
+  showSet();
+  function route() {
+  $('main').innerHTML = ''; PARSED = null;
+  decodeHash(location.hash).then(function (p) {
+    if (!p || !Array.isArray(p.data) || !p.data[0]) {
+      var c = el('div', 'card'); c.appendChild(el('b', '', '과정 정보가 없는 주소입니다.'));
+      c.appendChild(el('p', 'note', '행정망 평가관리 → 과정 → 1. 설문의 [휴대폰으로 설문 만들기] 또는 [휴대폰으로 결과 받기] QR을 휴대폰 카메라로 다시 찍어 주세요.'));
+      $('main').appendChild(c); return;
+    }
+    PARSED = p; start();
+  }).catch(function (e) { var c = el('div', 'card'); c.appendChild(el('b', '', '주소를 읽지 못했습니다.')); c.appendChild(el('p', 'note', String(e && e.message || e))); $('main').appendChild(c); });
+  }
+  window.addEventListener('hashchange', route);   // 같은 창에서 다른 QR 주소를 열 때
+  route();
+})();
+</script>
+</body>
+</html>
