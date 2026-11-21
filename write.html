@@ -161,13 +161,10 @@
         <div class="ex">JPG·PNG. 크기를 줄여 카드에 넣습니다.</div></div>
     </div>
 
-    <div class="grid2">
-      <div class="f"><label for="nm" class="req">성명(한글)</label><input type="text" id="nm" autocomplete="name"></div>
-      <div class="f"><label for="nmH">성명(한자) <span class="opt">(선택)</span></label><input type="text" id="nmH"></div>
-    </div>
+    <div class="f"><label for="nm" class="req">성명</label><input type="text" id="nm" autocomplete="name"></div>
     <div class="f"><label class="lbl">주민등록번호 <span class="opt">(강사수당 지급용)</span></label>
       <div class="row-rrn"><input type="tel" id="rrn1" inputmode="numeric" maxlength="6" placeholder="앞 6자리" aria-label="주민등록번호 앞 6자리"><span>-</span><input type="tel" id="rrn2" inputmode="numeric" maxlength="7" placeholder="뒤 7자리" aria-label="주민등록번호 뒤 7자리" autocomplete="off"></div>
-      <div class="sens">주민등록번호와 계좌번호는 PDF에만 들어가며, 이 화면은 어디에도 보내거나 저장하지 않습니다. 비워 두고 나중에 담당자에게 전화로 알려 주셔도 됩니다.</div></div>
+      <div class="sens">주민등록번호와 계좌번호는 PDF에만 들어가며, 이 화면은 어디에도 보내거나 저장하지 않습니다. 주민등록번호는 비워 두고 나중에 담당자에게 전화로 알려 주셔도 됩니다.</div></div>
     <div class="grid2">
       <div class="f"><label for="org">소속</label><input type="text" id="org" placeholder="예: OO소방서 예방과"></div>
       <div class="f"><label for="pos">직위</label><input type="text" id="pos" placeholder="예: 소방경"></div>
@@ -181,10 +178,10 @@
     </div>
     <div class="f"><label for="em" class="req">이메일</label><input type="email" id="em" placeholder="배정 안내를 받을 주소"></div>
     <div class="grid2">
-      <div class="f"><label for="bank">은행명</label><input type="text" id="bank" list="bankList" placeholder="예: 농협은행" autocomplete="off"></div>
-      <div class="f"><label for="holder">예금주</label><input type="text" id="holder" placeholder="성명과 같으면 자동 입력" autocomplete="off"></div>
+      <div class="f"><label for="bank" class="req">은행명</label><input type="text" id="bank" list="bankList" placeholder="예: 농협은행" autocomplete="off"></div>
+      <div class="f"><label for="holder" class="req">예금주</label><input type="text" id="holder" placeholder="성명과 같으면 자동 입력" autocomplete="off"></div>
     </div>
-    <div class="f"><label for="acct">계좌번호 <span class="opt">(숫자만)</span></label><input type="tel" id="acct" inputmode="numeric" autocomplete="off" placeholder="- 없이 숫자만 입력"></div>
+    <div class="f"><label for="acct" class="req">계좌번호 <span class="opt">(숫자만)</span></label><input type="tel" id="acct" inputmode="numeric" autocomplete="off" placeholder="- 없이 숫자만 입력"></div>
     <datalist id="bankList"><option value="농협은행"><option value="지역 농·축협"><option value="국민은행"><option value="신한은행"><option value="우리은행"><option value="하나은행"><option value="기업은행"><option value="광주은행"><option value="전북은행"><option value="우체국"><option value="새마을금고"><option value="신협"><option value="수협은행"><option value="카카오뱅크"><option value="토스뱅크"><option value="케이뱅크"><option value="SC제일은행"><option value="iM뱅크(대구)"><option value="부산은행"><option value="경남은행"><option value="산업은행"></datalist>
 
     <div class="sub">학력·자격·경력</div>
@@ -217,7 +214,8 @@
     <div class="f"><label for="region">활동지역</label><input type="text" id="region" placeholder="예) 전남 동부권"></div>
     <div class="f"><label for="unav">출강이 어려운 시기 <span class="opt">(해당 시)</span></label><input type="text" id="unav" placeholder="예) 2027.3.~5. / 7월 전체">
       <div class="chips" data-g="days" style="margin-top:8px"></div></div>
-    <div class="f"><label for="equip">교수 자료 신청</label><input type="text" id="equip" placeholder="예) PPT 활용을 위한 시설(PC, 프로젝터 등)"></div>
+    <div class="f"><span class="lbl">교수 자료 신청 <span class="opt">(선택 · 여러 개)</span></span><div class="chips" data-g="equip"></div>
+      <input type="text" id="equipEtc" placeholder="그 밖에 필요한 시설·장비가 있으면 적어 주세요" style="margin-top:8px"></div>
     <div class="f"><span class="lbl">교육자료 사용 동의</span>
       <div class="ex" style="margin:0 0 8px">본인의 강의에 사용하는 자료를 교육생에게 인쇄물 등으로 제공함을 허락합니다.</div>
       <div class="yn"><input type="radio" name="agMat" id="agMatY" value="동의함"><label for="agMatY">동의함</label><input type="radio" name="agMat" id="agMatN" value="동의 안함" class="no"><label for="agMatN">동의 안함</label></div></div>
@@ -313,7 +311,8 @@
     field: ['화재진압', '구조', '구급·응급의료', '화재조사', '예방·안전점검', '소방시설', '위험물', '재난·상황관리', '소방차량·장비', '체력·안전관리', '법령·행정', '리더십·조직관리', '심리·스트레스', '인문·소양', '디지털·AI', '안전교육·교수법', '그 밖의 분야'],
     target: ['신규임용자', '재직자(실무자)', '지휘관·관리자', '의용소방대', '일반 국민', '장애인·어린이·노인'],
     method: ['이론 강의', '실습·실기', '사례·토론', '시뮬레이션·VR', '현장 견학'],
-    days: ['월', '화', '수', '목', '금']
+    days: ['월', '화', '수', '목', '금'],
+    equip: ['PC(노트북)', '프로젝터', '무선마이크', '레이저포인터', '화이트보드', '인터넷 연결', '실습 장비(별도 협의)']
   };
   var ONE = { type: 1, spec: 1 };
   document.querySelectorAll('.chips[data-g]').forEach(function (box) {
@@ -351,8 +350,9 @@
     var ok = function (b) { return b ? '<b class="okk">완료</b>' : '<b class="no">필요</b>'; };
     var cs = ['c1', 'c2', 'c3'].every(function (n) { return document.querySelector('input[name=' + n + ']:checked'); });
     $('chk').innerHTML = '<li><span>성명·휴대전화·이메일</span>' + ok($('nm').value.trim() && $('mob').value.trim() && $('em').value.trim()) + '</li>' +
+      '<li><span>은행·예금주·계좌번호</span>' + ok($('bank').value.trim() && $('holder').value.trim() && $('acct').value.trim()) + '</li>' +
       '<li><span>동의 여부 3개 선택</span>' + ok(cs) + '</li><li><span>서명</span>' + ok(signed) + '</li>' +
-      '<li><span>주민등록번호·계좌 <small class="opt">(선택)</small></span>' + ($('rrn1').value && $('acct').value ? '<b class="okk">입력함</b>' : '<b style="color:#6B7480">비워 둠</b>') + '</li>';
+      '<li><span>주민등록번호 <small class="opt">(선택)</small></span>' + ($('rrn1').value && $('rrn2').value ? '<b class="okk">입력함</b>' : '<b style="color:#6B7480">비워 둠</b>') + '</li>';
     $('subj').textContent = '[강사등록] ' + nm; $('files').textContent = nm + '_강사관리카드.pdf, ' + nm + '_동의서.pdf';
   }
   document.addEventListener('input', status); document.addEventListener('change', status); status();
@@ -434,11 +434,11 @@
   $('nm').addEventListener('input', function () { if (!holderTouched) $('holder').value = $('nm').value.trim(); });
   $('acct').addEventListener('input', function () { this.value = this.value.replace(/[^\d-]/g, ''); });
   function collect() {
-    return { nm: val('nm'), nmH: val('nmH'), rrn1: val('rrn1').replace(/\D/g, ''), rrn2: val('rrn2').replace(/\D/g, ''), org: val('org'), pos: val('pos'),
+    return { nm: val('nm'), nmH: '', rrn1: val('rrn1').replace(/\D/g, ''), rrn2: val('rrn2').replace(/\D/g, ''), org: val('org'), pos: val('pos'),
       addrK: $('adH').checked ? '자택' : '직장', addr: val('addr'), mob: val('mob'), telW: val('telW'), em: val('em'), bank: [val('bank'), val('holder')].filter(Boolean).join(' / '), acct: val('acct'),
       edu: eduLines(), cert: certLines(), career: $('career').value.trim(), lect: $('lect').value.trim(),
       type: picked('type')[0] || '', spec: picked('spec')[0] || '', field: picked('field'), fieldEtc: val('fieldEtc'), kw: val('kw'),
-      target: picked('target'), method: picked('method'), region: val('region'), unav: val('unav'), days: picked('days'), equip: val('equip'),
+      target: picked('target'), method: picked('method'), region: val('region'), unav: val('unav'), days: picked('days'), equip: picked('equip').concat(val('equipEtc') ? [val('equipEtc')] : []).join(', '),
       agMat: picked('agMat')[0] || '', c1: yn('c1'), c2: yn('c2'), c3: yn('c3') };
   }
   // 휴대전화 자동 줄표
@@ -448,6 +448,9 @@
     if (!d.nm) p.push(['nm', '성명을 입력해 주세요.']);
     if (!/^01\d-?\d{3,4}-?\d{4}$/.test(d.mob.replace(/\s/g, ''))) p.push(['mob', '휴대전화 번호를 확인해 주세요. 예) 010-1234-5678']);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.em)) p.push(['em', '이메일 주소를 확인해 주세요.']);
+    if (!val('bank')) p.push(['bank', '은행명을 입력해 주세요.']);
+    else if (!val('holder')) p.push(['holder', '예금주를 입력해 주세요.']);
+    if (!/^\d[\d-]{5,}$/.test(d.acct) || d.acct.replace(/\D/g, '').length < 8) p.push(['acct', '계좌번호를 확인해 주세요. 숫자만 8자리 이상 입력합니다.']);
     if ((d.rrn1 || d.rrn2) && !(/^\d{6}$/.test(d.rrn1) && /^\d{7}$/.test(d.rrn2))) p.push(['rrn1', '주민등록번호는 앞 6자리, 뒤 7자리입니다. 모르시면 두 칸 모두 비워 두세요.']);
     rowProblems().forEach(function (x) { p.push(x); });
     if ((d.edu || d.cert) && !$('ack').checked) p.push([$('ackBox'), '증명서류 제출 안내를 읽고 확인 칸에 체크해 주세요.']);
@@ -558,6 +561,6 @@
   ['s1', 's2', 's3', 's4'].forEach(function (id) { io.observe($(id)); });
 })();
 </script>
-<div style="text-align:center;font-size:11px;color:#9AA3AF;padding:4px 0 18px">화면 버전 2026-11-21 웹 작성 6</div>
+<div style="text-align:center;font-size:11px;color:#9AA3AF;padding:4px 0 18px">화면 버전 2026-11-21 웹 작성 8</div>
 </body>
 </html>
