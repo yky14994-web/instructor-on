@@ -49,6 +49,39 @@
   .btn.main { background:var(--navy); border-color:var(--navy); color:#fff; } .btn.main:hover { background:var(--navy-d); }
   .btn.big { height:54px; font-size:16px; width:100%; border-radius:10px; }
   .btn:disabled { opacity:.5; cursor:not-allowed; }
+  /* 학력·자격증 칸 나누기 */
+  .rows .rw { position:relative; padding:12px; margin-bottom:10px; border:1px solid var(--line); border-radius:10px; background:#FAFBFC; }
+  .rows .rw .g { display:grid; gap:8px 10px; grid-template-columns:1fr 1fr; }
+  .rows .rw .g > div { min-width:0; }
+  .rows .rw .g .w2 { grid-column:1 / -1; }
+  .rows .rw small { display:block; font-size:12.5px; font-weight:700; color:var(--sub); margin-bottom:4px; }
+  .rows .rw input, .rows .rw select { height:42px; }
+  .rows .rw .rm { position:absolute; top:6px; right:8px; border:0; background:none; color:var(--muted); font-size:13px; font-weight:700; cursor:pointer; padding:4px 6px; }
+  .rows .add { width:100%; }
+  .rows .rw.bad { border-color:var(--bad); background:#FFF8F4; }
+  /* 증명서류 안내 */
+  .proof { margin:4px 0 16px; padding:12px 14px; border:1px solid #E6D3A6; background:#FFF8E8; border-radius:10px; text-align:left; font-size:13.5px; line-height:1.65; color:#5C4300; word-break:keep-all; }
+  .proof b.t { display:block; margin-bottom:4px; font-size:14px; color:#4A3500; }
+  .proof ul { margin:0; padding-left:18px; }
+  .proof .em { color:#B42318; font-weight:800; }
+  .ackrow { display:flex; gap:10px; align-items:flex-start; margin:-6px 0 16px; padding:12px 14px; border:1px solid #D9DEE5; border-radius:10px; background:#fff; line-height:1.55; font-size:14px; font-weight:700; cursor:pointer; word-break:keep-all; }
+  .ackrow input { width:22px; height:22px; margin:1px 0 0; flex:none; accent-color:#1F4E79; }
+  .ackrow small { font-weight:400; color:var(--muted); }
+  .ackrow.bad { border-color:var(--bad); background:#FFF8F4; }
+  #done .proof ul { margin:0; padding:0 0 0 18px; background:none; border-radius:0; font-size:13.5px; line-height:1.65; }
+  #done .proof { margin:0 0 12px; }
+  #done .proofmail { margin:-6px 0 18px; text-align:left; }
+  /* 보냈는지 확인 · 완료 안내 */
+  .ask { margin-top:14px; padding:16px; border:1px solid #CFDCEC; background:#EEF4FB; border-radius:12px; }
+  .ask p { margin:0 0 12px; line-height:1.6; font-weight:700; color:#203A57; word-break:keep-all; }
+  .ask .two { display:grid; grid-template-columns:1fr; gap:8px; }
+  .wrap.finished > *:not(#done) { display:none !important; }
+  #done { text-align:center; padding:34px 22px 26px; }
+  #done .okmark { width:56px; height:56px; border-radius:50%; background:var(--ok); color:#fff; display:inline-flex; align-items:center; justify-content:center; margin-bottom:12px; }
+  #done h2 { justify-content:center; font-size:21px; margin-bottom:10px; }
+  #done ul { text-align:left; margin:14px 0 18px; padding:14px 18px 14px 32px; background:#F7F9FB; border-radius:10px; line-height:1.75; font-size:14.5px; word-break:keep-all; }
+  #done .warn { text-align:left; margin:0 0 18px; padding:10px 14px; background:#FFF6E5; color:#7A4A00; border-radius:8px; font-size:13.5px; line-height:1.6; word-break:keep-all; }
+  #done .after { margin-top:12px; color:var(--bad); font-size:14px; line-height:1.6; }
   /* 선택 칩 */
   .chips { display:flex; flex-wrap:wrap; gap:8px; }
   .chips input { position:absolute; opacity:0; pointer-events:none; }
@@ -148,13 +181,23 @@
     </div>
     <div class="f"><label for="em" class="req">이메일</label><input type="email" id="em" placeholder="배정 안내를 받을 주소"></div>
     <div class="grid2">
-      <div class="f"><label for="bank">은행 / 예금주</label><input type="text" id="bank" placeholder="예: 농협 / 홍길동"></div>
-      <div class="f"><label for="acct">계좌번호</label><input type="tel" id="acct" inputmode="numeric" autocomplete="off"></div>
+      <div class="f"><label for="bank">은행명</label><input type="text" id="bank" list="bankList" placeholder="예: 농협은행" autocomplete="off"></div>
+      <div class="f"><label for="holder">예금주</label><input type="text" id="holder" placeholder="성명과 같으면 자동 입력" autocomplete="off"></div>
     </div>
+    <div class="f"><label for="acct">계좌번호 <span class="opt">(숫자만)</span></label><input type="tel" id="acct" inputmode="numeric" autocomplete="off" placeholder="- 없이 숫자만 입력"></div>
+    <datalist id="bankList"><option value="농협은행"><option value="지역 농·축협"><option value="국민은행"><option value="신한은행"><option value="우리은행"><option value="하나은행"><option value="기업은행"><option value="광주은행"><option value="전북은행"><option value="우체국"><option value="새마을금고"><option value="신협"><option value="수협은행"><option value="카카오뱅크"><option value="토스뱅크"><option value="케이뱅크"><option value="SC제일은행"><option value="iM뱅크(대구)"><option value="부산은행"><option value="경남은행"><option value="산업은행"></datalist>
 
     <div class="sub">학력·자격·경력</div>
-    <div class="f"><label for="edu">학력(학위)</label><textarea id="edu" rows="2" placeholder="예) 경기대학교 OO대학원 OOO박사학위 취득(07.7.13. 취득)"></textarea></div>
-    <div class="f"><label for="cert">자격증</label><textarea id="cert" rows="2" placeholder="예) OO기술사(18.5.15. 취득) — 한 줄에 하나씩"></textarea></div>
+    <div class="proof" data-proof></div>
+    <label class="ackrow" id="ackBox"><input type="checkbox" id="ack"><span>위 증명서류 제출 안내(최초 1회, 강의 종료 후 3일 이내)를 확인했습니다. <small>(학력·자격증을 입력한 경우 체크)</small></span></label>
+    <div class="f"><span class="lbl">학력(학위)</span>
+      <div class="rows" id="eduRows"></div>
+      <button type="button" class="btn add" id="eduAdd">+ 학력 추가</button>
+      <div class="ex">학교·학위·졸업(수료) 연도를 칸마다 입력해 주세요. 입력하지 않아도 됩니다.</div></div>
+    <div class="f"><span class="lbl">자격증</span>
+      <div class="rows" id="certRows"></div>
+      <button type="button" class="btn add" id="certAdd">+ 자격증 추가</button>
+      <div class="ex">자격증명과 취득 연도를 칸마다 입력해 주세요. 입력하지 않아도 됩니다.</div></div>
     <div class="f"><label for="career">주요이력</label><textarea id="career" rows="3" placeholder="한 줄에 하나씩"></textarea></div>
     <div class="f"><label for="lect">강의경력</label><textarea id="lect" rows="3" placeholder="출강 기관과 교과목을 한 줄에 하나씩 적어 주세요."></textarea>
       <div class="ex">향후 유사과정 강사 초빙에 참고합니다.</div></div>
@@ -225,10 +268,32 @@
       <button type="button" class="btn big hide" id="dl">이 기기에 내려받기</button>
     </div>
     <div class="msg" id="msg" role="status" aria-live="polite"></div>
+    <div class="ask hide" id="ask" role="group" aria-label="메일 발송 확인">
+      <p>메일을 보내셨나요? 메일 앱에서 [보내기]까지 눌렀다면 아래 버튼을 눌러 주세요.</p>
+      <div class="two"><button type="button" class="btn main big" id="sent">메일을 보냈습니다</button><button type="button" class="btn big" id="notYet">아직 안 보냈습니다</button></div>
+    </div>
     <div class="mailbox"><div><span class="k">받는 주소</span><b id="to">(담당자에게 문의)</b> <button type="button" class="lnk" id="cpTo">복사</button></div>
       <div><span class="k">메일 제목</span><b id="subj">[강사등록] 성명</b> <button type="button" class="lnk" id="cpSubj">복사</button></div>
       <div><span class="k">첨부</span><span id="files">성명_강사관리카드.pdf, 성명_동의서.pdf</span></div></div>
     <p class="note" id="howto">휴대폰: [메일 앱으로 보내기]를 누르고 메일 앱을 고르면 PDF 2개가 첨부됩니다. 받는 주소와 제목을 붙여 넣고 보내 주세요.<br>PC: [이 기기에 내려받기]로 저장한 뒤, 쓰시는 메일에 두 파일을 첨부해 보내 주세요.</p>
+    <div class="proof" data-proof></div>
+  </section>
+
+  <!-- 5. 보낸 뒤 안내 -->
+  <section class="card hide" id="done" role="status" aria-live="polite">
+    <span class="okmark"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+    <h2>등록 서류를 보내 주셔서 감사합니다</h2>
+    <ul>
+      <li>담당자가 보내 주신 서류를 확인한 뒤 강사 등록을 진행합니다.</li>
+      <li>서류를 보완해야 하면 입력하신 휴대전화·이메일로 연락드립니다.</li>
+      <li>문의: <b id="doneTel">교육운영팀</b></li>
+    </ul>
+    <div class="proof" data-proof></div>
+    <div class="mailbox proofmail"><div><span class="k">받는 주소</span><b id="pTo"></b> <button type="button" class="lnk" id="cpTo2">복사</button></div>
+      <div><span class="k">메일 제목</span><b id="pSubj"></b> <button type="button" class="lnk" id="cpSubj2">복사</button></div></div>
+    <p class="warn">이 화면에 입력한 내용은 지웠습니다. 휴대폰이나 PC에 내려받은 PDF에는 주민등록번호·계좌번호가 들어 있으니, 메일을 보낸 뒤 <b>내려받은 파일과 메일 앱 보낸편지함의 첨부</b>를 정리해 주세요.</p>
+    <button type="button" class="btn main big" id="closeBtn">닫기</button>
+    <p class="after hide" id="afterClose">이 화면이 자동으로 닫히지 않았습니다. 브라우저의 탭(창) 닫기 버튼으로 직접 닫아 주세요.</p>
   </section>
 
   <footer>문의: 교육운영팀 061-860-4735 · 양식(한글)으로 작성하려면 <a href="guide.html">등록 안내</a></footer>
@@ -311,10 +376,67 @@
   function val(id) { return $(id).value.trim(); }
   function picked(name) { return Array.prototype.map.call(document.querySelectorAll('input[name=' + name + ']:checked'), function (x) { return x.value; }); }
   function yn(n) { return $(n + 'y').checked ? true : ($(n + 'n').checked ? false : null); }
+  // 학력·자격증: 칸을 나눠 입력 → PDF에는 한 줄 문장으로 넣음
+  var THIS_YEAR = new Date().getFullYear();
+  function mkInput(cls, ph, extra) { return '<input type="text" class="' + cls + '" placeholder="' + ph + '" ' + (extra || '') + '>'; }
+  function mkSel(cls, list, ph) { return '<select class="' + cls + '">' + (ph ? '<option value="">' + ph + '</option>' : '') + list.map(function (v) { return '<option>' + v + '</option>'; }).join('') + '</select>'; }
+  var ROWS = {
+    edu: { box: 'eduRows', max: 4, html: '<div class="g"><div class="w2"><small>학교</small>' + mkInput('e-sch', '예) 경기대학교') + '</div><div class="w2"><small>전공</small>' + mkInput('e-maj', '예) 소방방재학') + '</div>' +
+      '<div><small>학위</small>' + mkSel('e-deg', ['전문학사', '학사', '석사', '박사'], '선택') + '</div><div><small>구분</small>' + mkSel('e-st', ['졸업', '수료'], '선택') + '</div>' +
+      '<div class="w2"><small>졸업(수료) 연도</small>' + mkInput('e-yr', '예) 2007', 'inputmode="numeric" autocomplete="off"') + '</div></div>' },
+    cert: { box: 'certRows', max: 6, html: '<div class="g"><div class="w2"><small>자격증명</small>' + mkInput('c-nm', '예) 소방기술사') + '</div><div class="w2"><small>발급 기관</small>' + mkInput('c-org', '예) 한국산업인력공단') + '</div>' +
+      '<div><small>취득 연도</small>' + mkInput('c-yr', '예) 2018', 'inputmode="numeric" autocomplete="off"') + '</div><div><small>취득 월</small>' + mkSel('c-mo', ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'], '선택 안 함') + '</div></div>' }
+  };
+  function addRow(kind) {
+    var R = ROWS[kind], box = $(R.box);
+    if (box.children.length >= R.max) return;
+    var d = document.createElement('div'); d.className = 'rw'; d.innerHTML = R.html + '<button type="button" class="rm" aria-label="이 줄 지우기">지우기</button>';
+    d.querySelector('.rm').onclick = function () {
+      if (box.children.length > 1) d.remove(); else d.querySelectorAll('input,select').forEach(function (e) { e.value = ''; });
+      $(kind + 'Add').disabled = false; stale();
+    };
+    d.querySelectorAll('.e-yr,.c-yr').forEach(function (e) { e.addEventListener('input', function () { this.value = this.value.replace(/\D/g, '').slice(0, 4); }); });
+    box.appendChild(d); $(kind + 'Add').disabled = box.children.length >= R.max;
+  }
+  addRow('edu'); addRow('cert');
+  document.addEventListener('input', function (e) { var r = e.target.closest && e.target.closest('.rw.bad'); if (r) r.classList.remove('bad'); });
+  $('ack').addEventListener('change', function () { $('ackBox').classList.remove('bad'); });
+  $('eduAdd').onclick = function () { addRow('edu'); stale(); }; $('certAdd').onclick = function () { addRow('cert'); stale(); };
+  function rowVal(r, c) { var e = r.querySelector('.' + c); return e ? e.value.trim() : ''; }
+  function rowsOf(kind) { return Array.prototype.slice.call($(ROWS[kind].box).children).filter(function (r) { return Array.prototype.some.call(r.querySelectorAll('input,select'), function (e) { return e.value.trim() !== ''; }); }); }
+  function eduLines() { return rowsOf('edu').map(function (r) { return [rowVal(r, 'e-sch'), rowVal(r, 'e-maj'), rowVal(r, 'e-deg'), rowVal(r, 'e-st')].filter(Boolean).join(' ') + (rowVal(r, 'e-yr') ? '(' + rowVal(r, 'e-yr') + ')' : ''); }).join('\n'); }
+  function certLines() { return rowsOf('cert').map(function (r) { var mo = rowVal(r, 'c-mo'), t = rowVal(r, 'c-yr') + (mo ? '.' + mo : '') + ' 취득'; return rowVal(r, 'c-nm') + '(' + (rowVal(r, 'c-org') ? rowVal(r, 'c-org') + ', ' : '') + t + ')'; }).join('\n'); }
+  function rowProblems() {
+    var p = [], okY = function (y) { return /^\d{4}$/.test(y) && +y >= 1930 && +y <= THIS_YEAR; };
+    rowsOf('edu').forEach(function (r, i) {
+      var n = i + 1, miss = [];
+      if (!rowVal(r, 'e-sch')) miss.push('학교'); if (!rowVal(r, 'e-deg')) miss.push('학위'); if (!rowVal(r, 'e-st')) miss.push('졸업/수료'); if (!okY(rowVal(r, 'e-yr'))) miss.push('연도(' + 1930 + '~' + THIS_YEAR + ', 숫자 4자리)');
+      if (miss.length) p.push([r, '학력 ' + n + '번째 줄을 확인해 주세요: ' + miss.join(', ')]);
+    });
+    rowsOf('cert').forEach(function (r, i) {
+      var n = i + 1, miss = [];
+      if (!rowVal(r, 'c-nm')) miss.push('자격증명'); if (!okY(rowVal(r, 'c-yr'))) miss.push('취득 연도(' + 1930 + '~' + THIS_YEAR + ', 숫자 4자리)');
+      if (miss.length) p.push([r, '자격증 ' + n + '번째 줄을 확인해 주세요: ' + miss.join(', ')]);
+    });
+    return p;
+  }
+  // 증명서류 안내: 세 곳(입력 위·보내기 아래·완료 화면)에 같은 문구를 넣음
+  var PROOF = '<b class="t">강사료 지급을 위한 증명서류 (최초 1회)</b><ul>' +
+    '<li>입력하신 학위·자격증 중 <b>강사료 단가에 가장 유리한 1건</b>의 증명서류(졸업증명서·학위증·자격증 사본)를 메일로 보내 주세요.</li>' +
+    '<li><b>최초 1회만</b> 보내시면 됩니다. 다음 강의부터는 다시 보내지 않으셔도 됩니다.</li>' +
+    '<li>제출 기한: <b>강의 종료 후 3일 이내</b>. 입력하신 내용과 대조해 확인한 뒤 단가를 정해 강사료를 지급합니다.</li>' +
+    '<li>받는 주소는 등록 서류와 같습니다.</li>' +
+    '<li class="em">증명서류의 주민등록번호 뒷자리(7자리)와 계좌번호는 반드시 가려서 보내 주세요.</li></ul>';
+  document.querySelectorAll('[data-proof]').forEach(function (e) { e.innerHTML = PROOF; });
+  // 예금주: 성명과 같으면 자동 입력(직접 고치면 그대로 둠)
+  var holderTouched = false;
+  $('holder').addEventListener('input', function () { holderTouched = true; });
+  $('nm').addEventListener('input', function () { if (!holderTouched) $('holder').value = $('nm').value.trim(); });
+  $('acct').addEventListener('input', function () { this.value = this.value.replace(/[^\d-]/g, ''); });
   function collect() {
     return { nm: val('nm'), nmH: val('nmH'), rrn1: val('rrn1').replace(/\D/g, ''), rrn2: val('rrn2').replace(/\D/g, ''), org: val('org'), pos: val('pos'),
-      addrK: $('adH').checked ? '자택' : '직장', addr: val('addr'), mob: val('mob'), telW: val('telW'), em: val('em'), bank: val('bank'), acct: val('acct'),
-      edu: $('edu').value.trim(), cert: $('cert').value.trim(), career: $('career').value.trim(), lect: $('lect').value.trim(),
+      addrK: $('adH').checked ? '자택' : '직장', addr: val('addr'), mob: val('mob'), telW: val('telW'), em: val('em'), bank: [val('bank'), val('holder')].filter(Boolean).join(' / '), acct: val('acct'),
+      edu: eduLines(), cert: certLines(), career: $('career').value.trim(), lect: $('lect').value.trim(),
       type: picked('type')[0] || '', spec: picked('spec')[0] || '', field: picked('field'), fieldEtc: val('fieldEtc'), kw: val('kw'),
       target: picked('target'), method: picked('method'), region: val('region'), unav: val('unav'), days: picked('days'), equip: val('equip'),
       agMat: picked('agMat')[0] || '', c1: yn('c1'), c2: yn('c2'), c3: yn('c3') };
@@ -327,6 +449,8 @@
     if (!/^01\d-?\d{3,4}-?\d{4}$/.test(d.mob.replace(/\s/g, ''))) p.push(['mob', '휴대전화 번호를 확인해 주세요. 예) 010-1234-5678']);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.em)) p.push(['em', '이메일 주소를 확인해 주세요.']);
     if ((d.rrn1 || d.rrn2) && !(/^\d{6}$/.test(d.rrn1) && /^\d{7}$/.test(d.rrn2))) p.push(['rrn1', '주민등록번호는 앞 6자리, 뒤 7자리입니다. 모르시면 두 칸 모두 비워 두세요.']);
+    rowProblems().forEach(function (x) { p.push(x); });
+    if ((d.edu || d.cert) && !$('ack').checked) p.push([$('ackBox'), '증명서류 제출 안내를 읽고 확인 칸에 체크해 주세요.']);
     ['c1', 'c2', 'c3'].forEach(function (c, i) { if (d[c] === null) p.push([c + 'y', '동의서 ' + (i + 1) + '번 항목의 동의 여부를 골라 주세요.']); });
     if (!signed) p.push(['signBox', '동의서에 서명해 주세요.']);
     return p;
@@ -362,7 +486,7 @@
     var d = collect(), p = problems(d);
     if (p.length) {
       say(p[0][1] + (p.length > 1 ? ' (그 밖에 ' + (p.length - 1) + '건)' : ''), false);
-      var el = $(p[0][0]); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); if (el.focus && el.tagName !== 'DIV') setTimeout(function () { el.focus({ preventScroll: true }); }, 350);
+      var el = typeof p[0][0] === 'string' ? $(p[0][0]) : p[0][0]; if (el.classList) { document.querySelectorAll('.rw.bad').forEach(function (x) { x.classList.remove('bad'); }); p.forEach(function (x) { if (typeof x[0] !== 'string') x[0].classList.add('bad'); }); } el.scrollIntoView({ behavior: 'smooth', block: 'center' }); if (el.focus && el.tagName !== 'DIV') setTimeout(function () { el.focus({ preventScroll: true }); }, 350);
       return;
     }
     if (!window.PDFLib || !window.fontkit || !window.IonPdf) return say('PDF 만들기 기능을 불러오는 중입니다. 잠시 후 다시 눌러 주세요.', false);
@@ -390,13 +514,34 @@
   cv.addEventListener('pointerup', stale); $('signClr').addEventListener('click', stale);
   $('share').onclick = function () {
     if (!FILES) return;
-    navigator.share({ files: FILES, title: $('subj').textContent, text: $('subj').textContent }).then(function () { say('메일 앱에서 받는 주소와 제목을 넣어 보내 주세요.', true); })
+    navigator.share({ files: FILES, title: $('subj').textContent, text: $('subj').textContent }).then(function () { say('메일 앱에서 받는 주소와 제목을 넣어 보내 주세요.', true); askSent(); })
       .catch(function (e) { if (e && e.name !== 'AbortError') say('보내기 화면을 열지 못했습니다. [이 기기에 내려받기]를 이용해 주세요.', false); });
   };
   $('dl').onclick = function () {
     if (!FILES) return;
     FILES.forEach(function (f, i) { setTimeout(function () { var a = document.createElement('a'); a.href = URLS[i]; a.download = f.name; document.body.appendChild(a); a.click(); a.remove(); }, i * 500); });
-    say('내려받았습니다. 쓰시는 메일에 두 파일을 첨부해 보내 주세요.', true);
+    say('내려받았습니다. 쓰시는 메일에 두 파일을 첨부해 보내 주세요.', true); askSent();
+  };
+  // 보냈는지 확인 → 안내 문구 → 닫기 (화면은 메일이 실제로 갔는지 알 수 없어 사용자 확인을 받음)
+  function askSent() { $('ask').classList.remove('hide'); setTimeout(function () { $('ask').scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 300); }
+  $('notYet').onclick = function () { $('ask').classList.add('hide'); say('메일 앱을 다시 열려면 [메일 앱으로 보내기]를 눌러 주세요.', true); };
+  $('sent').onclick = function () {
+    var nmv = val('nm'); holderTouched = false;
+    FILES = null; URLS.forEach(function (u) { URL.revokeObjectURL(u); }); URLS = []; PHOTO = null;
+    document.querySelectorAll('input, textarea, select').forEach(function (el) {
+      if (el.type === 'checkbox' || el.type === 'radio') el.checked = false; else if (el.type !== 'file') el.value = ''; else { try { el.value = ''; } catch (e) {} }
+    });
+    var c = $('sign'); if (c && c.getContext) c.getContext('2d').clearRect(0, 0, c.width, c.height);
+    $('doneTel').textContent = (CFG.contactName ? CFG.contactName + ' ' : '') + (CFG.contactPhone || '');
+    var pSub = '[증명서류] ' + (nmv || '성명'); $('pTo').textContent = CFG.officialMail || '(담당자에게 문의)'; $('pSubj').textContent = pSub;
+    function flash(b) { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); }
+    $('cpTo2').onclick = function () { if (CFG.officialMail) { copy(CFG.officialMail, '받는 주소'); flash(this); } }; $('cpSubj2').onclick = function () { copy(pSub, '메일 제목'); flash(this); };
+    document.querySelector('.wrap').classList.add('finished'); $('done').classList.remove('hide');
+    window.scrollTo(0, 0); $('closeBtn').focus({ preventScroll: true });
+  };
+  $('closeBtn').onclick = function () {
+    window.close();
+    setTimeout(function () { $('afterClose').classList.remove('hide'); $('closeBtn').classList.add('hide'); }, 400);
   };
   function copy(t, what) {
     var done = function () { say(what + '를 복사했습니다.', true); };
@@ -413,6 +558,6 @@
   ['s1', 's2', 's3', 's4'].forEach(function (id) { io.observe($(id)); });
 })();
 </script>
-<div style="text-align:center;font-size:11px;color:#9AA3AF;padding:4px 0 18px">화면 버전 2026-11-17 웹 작성 2</div>
+<div style="text-align:center;font-size:11px;color:#9AA3AF;padding:4px 0 18px">화면 버전 2026-11-21 웹 작성 6</div>
 </body>
 </html>
